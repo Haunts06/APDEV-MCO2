@@ -141,14 +141,39 @@ router.post('/selectlab', async (req, res) => {
     console.log("DATE: ", selectedDate); // remove soon
     console.log("TIME: ", selectedTime); // remove soon
 
-    let reqReservationList = await Laboratory.aggregate([ { $match: { name: reqLabName, reservationData: { $elemMatch: { reservationList: { $elemMatch: { date: req.session.date, time: req.session.time } } } } } } ]);
+    let reqReservationList =  await Laboratory.aggregate([{
+        $match: {
+          name: reqLabName, // Assuming you're looking for documents with name "Lab 1"
+        },
+        },
+        {
+            $unwind: "$reservationData", // Deconstruct the reservationData array
+        },
+        {
+            $unwind: "$reservationData.reservationList", // Deconstruct the reservationList array
+        },
+        {
+            $match: {
+            "reservationData.reservationList.date": selectedDate,
+            "reservationData.reservationList.time": selectedTime
+            },
+        },
+        {
+            $project: {
+            _id: 0, // Exclude the _id field
+            reservation: "$reservationData.reservationList" , // Include only the reservationList field
+            },
+        },
+    ]);
+    // reqReservationList.forEach(item => {
+    //     console.log(item);
+    // })
     
     const user = await User.findById(userId).lean();
     const reserveDates = await reserve.getNextFiveWeekdays();
     req.session.selectedLabName = reqLabName;  // set lab name to current session; global variable
     try {
         reqReservationList = await labsController.checkExistingReservationList(reqReservationList, reqLabName, selectedDate, selectedTime);
-        // console.log(reqReservationList);
 
         // need to add a way to update the status of the lab itself for that specific date and time
         const usage = await reserve.availableCapacity(reqReservationList);

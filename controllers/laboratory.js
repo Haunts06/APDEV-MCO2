@@ -48,7 +48,7 @@ async function createSampleLabs() {
 
 async function createNewReservationList(labName, date, time) {
     const existingLab = await Lab.findOne({name: labName}); // looks for laboratory in the database to add reservation list to
-    // console.log(existingLab); // remove soon
+    
     let newReservationList = labSeats(existingLab.capacity, date, time); // creates the new list of seats for the requested date and time
 
     try {
@@ -65,19 +65,12 @@ async function createNewReservationList(labName, date, time) {
 }
 
 async function checkExistingReservationList(selectedLab, labName, date, time) {
-    if(selectedLab.length === 0 ) { // if reservation list we're looking of is null
-        selectedLab = createNewReservationList(labName, date, time);
+    if(selectedLab.length == 0 ) { // if reservation list we're looking of is null
+        selectedLab = await createNewReservationList(labName, date, time);
         console.log("null");
         console.log("created new reservation list for " + date, "at " + time);
-
-        return selectedLab;
-    } else { 
-        console.log("not null");
-        let reqReservationList = await Lab.findOne({name: labName, reservationData:{reservationList: {date: date, time, time}}});
-        console.log(reqReservationList);
-        
-        return reqReservationList;
-    }
+    } 
+    return selectedLab;
 }
 
 module.exports = {checkExistingReservationList}

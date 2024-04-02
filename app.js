@@ -47,6 +47,6 @@ const adminRouter = require('./controllers/adminRouter.js');
 const samples = require('./models/sampleData.js');
 //samples.createSampleUsers();
 // samples.createSampleReservations();
-samples.createSampleLabs();
+// samples.createSampleLabs();
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);

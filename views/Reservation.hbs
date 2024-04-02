@@ -74,10 +74,10 @@
 
         <form method = "POST" class="grid-status-container" id="grid-container" action = "/reserve">
             {{#each reqReservationList}}
-                {{#if this.isOccupied}}
-                    <div class="grid-status-item occupied" id={{this.SlotID}}>{{this.SlotID}}</div>
+                {{#if reservation.isOccupied}}
+                    <div class="grid-status-item occupied" id={{reservation.SlotID}}>{{reservation.SlotID}}</div>
                 {{else}}
-                    <div class="grid-status-item" id={{this.SlotID}} data-slotid={{this.SlotID}}>{{this.SlotID}}</div>
+                    <div class="grid-status-item" id={{reservation.SlotID}} data-slotid={{reservation.SlotID}}>{{reservation.SlotID}}</div>
                 {{/if}}
             {{/each}}
         </form>

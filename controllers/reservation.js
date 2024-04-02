@@ -1,4 +1,5 @@
-const Handlebars = require('handlebars');
+const Lab = require('../models/laboratories.js');
+
 
 function customDate(day, date, month) {
     this.day = day;
@@ -60,15 +61,28 @@ async function updateDetails(labDetails, usage) {
 async function createReservation(UserID, SlotID, labName, date, time){
 
     // find the specific lab reservation list with the params labName date and time
-    await Laboratory.findOneAndUpdate(
-        { name: labName, "reservationData.reservationList.date": date,"reservationData.reservationList.time": time }, 
-        { $inc: { "reservationData.reservationList.usage": 1} },
-        { $set: { "reservationData.reservationList.$[elem].UserID": UserID, "reservationData.reservationList.$[elem].isOccupied": true } },
-        { 
-            arrayFilters: [{ "elem.SlotID": SlotID, "elem.isOccupied": false }],
-            new: true 
+    try {
+        const updatedDocument = await Lab.findOneAndUpdate(
+            { name: labName, "reservationData.reservationList.date": date, "reservationData.reservationList.time": time }, 
+            { $inc: { "reservationData.reservationList.usage": 1} },
+            { $set: { "reservationData.reservationList.UserID": UserID, "reservationData.reservationList.isOccupied": true } },
+            { 
+                arrayFilters: [{ "reservationList.reservationList.SlotID": SlotID, "reservationList.reservationList.reservation.isOccupied": false, }],
+                new: true 
+            }
+        );
+
+        await updatedDocument.save();
+
+        if (updatedDocument) {
+            console.log('Reservation updated successfully:', );
+            console.log(updatedDocument);
+            // The document was found and updated
+        } else {
+            console.log('No reservation found to update.');
+            // No document was found that matches the criteria
         }
-    );
+    } catch(error) {console.log(error);}
 } 
 
 module.exports = { getNextFiveWeekdays, updateDetails, availableCapacity, createReservation };
