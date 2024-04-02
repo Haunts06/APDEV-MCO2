@@ -1,0 +1,232 @@
+body{
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    animation: mymove 10s infinite;
+    font-family: 'Roboto', sans-serif;
+    margin-left: 20%;
+}
+
+#main {
+    display: flex;
+    flex-direction: column;
+    padding-left: 4%;
+    width: 80%;
+    padding-top: 30px;
+}
+
+/* button {
+    border-radius: 30px;
+    background-color: white;
+    font-size: 30px;
+    padding: 10px 30px 10px 30px;
+}
+
+button:hover {
+    filter: invert(100%);
+} */
+
+h1 {
+    font-size: 50px;
+}
+
+h2 {
+    font-size: 30px;
+    margin-top: 0px;
+}
+
+.lab-data {
+    margin-top: -10px;
+    margin-left: 2%;
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-bottom: 40px;
+}
+
+.grid-item {
+    width: 23%;
+    height: 150px;
+    text-align: center;
+    border: 0px solid;
+    border-color: black;
+    background-color: whitesmoke;
+    margin-right: 10px;
+}
+
+.day {
+    font-size: 20px;
+    height: 20%;
+    padding-top: 10px;
+    margin-bottom: 0px;
+    
+}
+
+.date-month {
+    height: 60%;
+    padding-top: 20px;
+    transition-duration: 0.6s;
+}
+
+.date-month:hover {
+    background-color: #30ad94;
+}
+
+.date {
+    font-size: 30px;
+}
+
+.month {
+    font-size: 20px;
+}
+
+#reservation {
+    color: aquamarine !important;
+}
+
+/* #select-time {
+    border-radius: 30px;
+    width: 15%;
+    height: 20%;
+    font-size: 30px;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    appearance: none; /* Remove default browser styling */
+    /* background: whitesmoke url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0  0  4  5'><path fill='%2330ad94' d='M2  0L0  2h4zm0  5L0  3h4z'/></svg>") no-repeat right .7em center; Custom SVG as the arrow */
+    /* background-size: .65em auto; Adjust size as needed }*/
+
+
+.room-details {
+    border-radius: 25px;
+    margin-top: 30px;
+    background-color: aquamarine;
+    padding: 20px 20px;
+    width: 56%;
+}
+
+#details {
+    font-size: 40px;
+    margin-bottom: 0px;
+}
+
+.room-details p {
+    font-size: 20px;
+    margin-bottom: 1px;
+    margin-left: 20px;
+}
+
+.seat-status {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 50px;
+    width: 50%;
+    margin-top: 30px;
+    margin-left: 4%;
+    margin-bottom: 30px;
+    padding: 10px 10px;
+    border-radius: 25px;
+    background-color: #C5C6D0;
+    font-size: 25px;
+}
+
+.status-text {
+    margin-right: 10px;
+}
+
+#available-dot {
+    height: 30px;
+    width: 30px;
+    background-color: black;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+#inner-dot {
+    height: 20px;
+    width: 20px;
+    margin-top: 5px;
+    margin-left: 5px;
+    background-color: white;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+#occupied-dot {
+    height: 30px;
+    width: 30px;
+    background-color: grey;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+#selected-dot {
+    height: 30px;
+    width: 30px;
+    background-color: aquamarine;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.grid-status-container {
+    display: grid;
+    grid-template-columns: repeat(5,  1fr);
+    grid-template-rows: repeat(5,  1fr);
+    width: 40%;
+    margin-left: 8.5%;
+    justify-content: stretch;
+}
+
+.grid-status-item {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    height: 80px;
+    width: 80px;
+    background-color: white;
+    border-radius: 50%;
+    border: 10px solid black;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+}
+
+.grid-item.selected {
+    background-color: #f0f0f0; /* Change to your preferred color */
+}
+
+.grid-status-item:hover{
+    background-color: #30ad94;
+    border-color: #30ad94;
+}
+
+.occupied {
+    background-color: gray !important;
+    border-color: gray !important;
+}
+
+.selected {
+    background-color: aquamarine !important;
+    border-color: aquamarine !important;
+}
+
+#reserve-btn {
+    border-radius: 30px;
+    background-color: white;
+    font-size: 30px;
+    margin-top: 30px;
+    margin-left: 22%;
+    padding: 10px 30px 10px 30px;
+}
+
+#reserve-btn:hover {
+    filter: invert(100%);
+}
+
+

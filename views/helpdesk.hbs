@@ -1,0 +1,36 @@
+<div id="main">
+    
+    <form method = "POST" action="/Home">
+        <button type="submit" id="back-btn">Back</button>
+    </form>
+
+
+    <h1>Help Desk</h1>
+    <p> Got a concern? Let us know what you are having trouble with through this form.</p>
+
+    <form id="help-form" method = "POST" action = "/404">
+        <div class="id-email">
+            <div class="label-input">
+                <p>ID Number</p>
+                <input type="textbox" id="ID_no" required>
+            </div>
+            <div class="label-input" id="email-div">
+                <p>E-mail</p>
+                <input type="textbox" id="email" required>
+            </div>
+        </div>
+
+        <div class="label-input">
+            <p>Title</p>
+            <input type="textbox" id="title">
+        </div>
+        <div class="label-input">
+            <p>Description</p>
+            <textarea type="textbox" id="description" required></textarea>
+        </div>
+
+        <button type="submit" id="submit-btn">Submit</button>
+        
+    </form>
+</div>
+

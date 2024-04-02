@@ -1,0 +1,10 @@
+<div id="main">
+    <h1>Laboratories List</h1>
+    {{#each laboratories}}
+        <div class="box" id="lab{{id}}">
+            <p><b>{{name}}</b></p>
+            <p>{{status}}</p>
+            <p><b>{{usage}}</b> out of {{capacity}}</p>
+        </div>
+    {{/each}}
+</div>

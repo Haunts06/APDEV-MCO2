@@ -1,0 +1,107 @@
+body{
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    animation: mymove 10s infinite;
+    font-family: 'Roboto', sans-serif;
+    margin-left: 20%;
+}
+
+#main {
+    display: flex;
+    flex-direction: column;
+    padding-left: 4%;
+    width: 80%;
+    padding-top: 30px;
+}
+
+#back-btn {
+    border-radius: 30px;
+    background-color: white;
+    font-size: 30px;
+    padding: 10px 30px 10px 30px;
+}
+
+#back-btn:hover {
+    filter: invert(100%);
+}
+
+h1 {
+    font-size: 40px;
+    margin-bottom: 0px;
+}
+
+.main p {
+    font-size: 30px;
+}
+
+#help-form {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: 100%;
+}
+
+.id-email {
+    display: flex;
+    justify-content: space-between; 
+}
+
+.label-input {
+    display: flex;
+    flex-direction: column;
+    flex-basis:  80%; 
+}
+
+.label-input #email-div {
+    display: flex;
+    flex-direction: row;
+}
+
+.label-input p {
+    font-size: 25px;
+}
+
+.label-input input {
+    box-sizing: border-box; 
+    width:  80%; 
+    height:  30px;
+    border:  1px solid;
+    border-radius:  30px;
+    padding: 10px 10px 10px 10px;
+}
+
+#title {
+    box-sizing: border-box;
+    width:  40%; 
+}
+
+textarea {
+    max-width:  84%; 
+    min-width:  84%;
+    min-height: 200px;
+    max-height:  200px; 
+    padding: 20px 20px 20px 20px;
+    line-height: 1.5;
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    border-radius: 30px;
+}
+
+#submit-btn {
+    width: 150px;
+    border-radius: 30px;
+    background-color: #30ad94;
+    font-size: 30px;
+    padding: 10px 20px;
+    margin-top: 50px;
+    margin-left: 30%;
+}
+
+#submit-btn:hover {
+    background-color: white;
+}
+
+#help {
+    color: #30ad94 !important;
+}

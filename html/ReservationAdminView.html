@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lab Reservation</title>
+
+    <link href="https://fonts.google.com/share?selection.family=Inter:wght@100..900|Kumbh+Sans:wght@400;700" rel="stylesheet">
+    <link href="../css/reservation.css" rel="stylesheet">
+    <link href="../css/sidebar.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div id="sidebar">
+
+        <div class="title">
+            <img src="https://scontent.fmnl17-3.fna.fbcdn.net/v/t1.15752-9/422985123_753783996378459_4894069643965514189_n.png?_nc_cat=106&ccb=1-7&_nc_sid=510075&_nc_ohc=e76UgocpslkAX9jCg7q&_nc_ht=scontent.fmnl17-3.fna&oh=03_AdROebqlAFFjPMINUtt1795si5DnMKXPuj7o_l7oAoSicg&oe=65F5D9A8">
+        </div>
+
+        <div class="profile">
+            <img src="https://singifyai.fineshare.com/song-ai/covers/garfield.webp"> <p>Garfield Cat</p> <a href="Profile.html"><img src ="https://cdn-icons-png.flaticon.com/128/271/271228.png" id="arrow"> </a>
+        </div>
+
+        <div class="nav-items">
+            <div class="menu-item" id="home">
+                <a href="adminIndex.html"><p>Home</p></a> 
+            </div>
+
+            <div class="menu-item" id="reservation">
+                <p>Reservation</p></a>
+            </div>
+
+            <div class="menu-item" id="edit-res">
+                <p>Admin View</p>
+            </div>
+
+            <div class="menu-item" id="logout">
+                <a href="LoginPage.html"><p>Log Out</p></a>
+            </div>
+
+        </div>
+        
+    </div>
+
+    <div id="main">
+        <form action="adminIndex.html">
+            <button type="submit">Back</button>
+        </form>
+
+        <h1>Reservation List</h1>
+
+        <p class="lab-data">
+            <p id="lab-name"><b>Laboratory 1</b></p>
+            <p id="lab-status"><b>Status:</b> Available</p>
+            <p id="lab-slots"><b>Slots:</b> 5 / 25</p> 
+        </p>
+
+        <h2> Reserve Date </h2>
+
+        <div class="grid-container">
+            <div class="grid-item">
+                <div class="day">Mon</div>
+                <div class="date-month">
+                    <div class="date">01</div>
+                    <div class="month">Jan</div>
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="day">Tues</div>
+                <div class="date-month">
+                    <div class="date">02</div>
+                    <div class="month">Jan</div>
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="day">Wed</div>
+                <div class="date-month">
+                    <div class="date">03</div>
+                    <div class="month">Jan</div>
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="day">Thurs</div>
+                <div class="date-month">
+                    <div class="date">04</div>
+                    <div class="month">Jan</div>
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="day">Fri</div>
+                <div class="date-month">
+                    <div class="date">05</div>
+                    <div class="month">Jan</div>
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="day">Sat</div>
+                <div class="date-month">
+                    <div class="date">06</div>
+                    <div class="month">Jan</div>
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="day">Sun</div>
+                <div class="date-month">
+                    <div class="date">07</div>
+                    <div class="month">Jan</div>
+                </div>
+            </div>
+        </div>
+        <h2>Select Time</h2>
+        <select name="Time" id="select-time">
+            <option value="8:30 AM">8:30 AM</option>
+            <option value="9:30 AM">9:30 AM</option>
+            <option value="10:30 AM">10:30 AM</option>
+            <option value="11:30 AM">11:30 AM</option>
+            <option value="12:30 PM">12:30 PM</option>
+            <option value="1:30 AM">1:30 PM</option>
+            <option value="2:30 AM">2:30 PM</option>
+            <option value="3:30 AM">3:30 PM</option>
+            <option value="4:30 AM">4:30 PM</option>
+        </select>
+
+        <div class="room-details">
+            <h2 id="details">Details</h2>
+            <p><b>User:</b></p>
+            <p><b>Name:</b> Garfield Bol</p>
+            <p><b>ID Number:</b> 123456789</p>
+            <p><b>Email:</b> garfield_boi@dlsu.edu.ph</p>
+        </div>
+
+        <div class="seat-status">
+            <div id="available-dot"><div id="inner-dot"></div></div>
+            <div class="status-text">Available</div>
+            <div id="occupied-dot"></div>
+            <div class="status-text">Occupied</div>
+            <div id="selected-dot"></div>
+            <div class="status-text">Selected</div>
+        </div>
+
+        <div class="grid-status-container">
+            <div class="grid-status-item" id="item1">1</div>
+            <div class="grid-status-item" id="item2">2</div>
+            <div class="grid-status-item" id="item3">3</div>
+            <div class="grid-status-item" id="item4">4</div>
+            <div class="grid-status-item" id="item5">5</div>
+            <div class="grid-status-item" id="item6">6</div>
+            <div class="grid-status-item" id="item7">7</div>
+            <div class="grid-status-item" id="item8">8</div>
+            <div class="grid-status-item" id="item9">9</div>
+            <div class="grid-status-item" id="item10">10</div>
+            <div class="grid-status-item" id="item11">11</div>
+            <div class="grid-status-item" id="item12">12</div>
+            <div class="grid-status-item" id="item13">13</div>
+            <div class="grid-status-item" id="item14">14</div>
+            <div class="grid-status-item" id="item15">15</div>
+            <div class="grid-status-item" id="item16">16</div>
+            <div class="grid-status-item" id="item17">17</div>
+            <div class="grid-status-item" id="item18">18</div>
+            <div class="grid-status-item" id="item19">19</div>
+            <div class="grid-status-item" id="item20">20</div>
+            <div class="grid-status-item" id="item21">21</div>
+            <div class="grid-status-item" id="item22">22</div>
+            <div class="grid-status-item" id="item23">23</div>
+            <div class="grid-status-item" id="item24">24</div>
+            <div class="grid-status-item" id="item25">25</div>
+        </div>
+
+        <form action="ReservationAdminEdit.html">
+            <button type="submit" id="reserve-btn">Reserve</button>
+        </form>
+
+    </div>
+        
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/reservation.js"></script>
+</body>
+
+</html>

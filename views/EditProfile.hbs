@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lab Reservation</title>
+</head>
+<body>
+    <div id="main">
+        <form method = "POST" action="/Profile">
+            <button type="submit" id="back-btn">Back</button>
+        </form>
+
+        <h1>Edit Profile Details</h1>
+        <p> Here you can edit your profile details here.</p>
+
+        <form id="edit-form" method = "POST" action ="/updateProfile">
+            <div class="row1">
+                <div class="col1">
+                    <div class="label-input">
+                        <p> First Name </p>
+                        <input type="textbox" id="first-name" name="fname">
+                    </div>
+                    <div class="label-input">
+                        <p> ID Number </p>
+                        <input type="textbox" id="ID_no" name="id">
+                    </div>
+                </div>
+                
+                <div class="col2">
+                    <div class="label-input">
+                        <p> Last Name </p>
+                        <input type="textbox" id="last-name" name="lname">
+                    </div>
+                    <div class="label-input">
+                        <p> E-mail </p>
+                        <input type="textbox" id="email" name="email">
+                    </div>
+                </div>
+                <div class="profile-picture">
+                    <button id="edit-pic-btn" > <img src="{{user.profilepic}}" id="profile-picture" alt="buttonpng"></button>
+                </div>
+            </div>
+
+            <div class="label-input">
+                <p>Description</p>
+                <textarea type="textbox" id="description" required name = "description1"></textarea>
+            </div>
+
+            <button type="submit" id="submit-btn">Submit</button>
+            
+        </form>
+
+        
+    </div>
+        
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/reservation.js"></script>
+</body>
+
+</html>

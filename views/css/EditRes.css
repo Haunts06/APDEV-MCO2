@@ -1,0 +1,52 @@
+body {
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    font-family: 'Roboto', sans-serif;
+    margin-left: 20%;
+}
+
+#main {
+    display: flex;
+    flex-direction: column;
+    padding: 5%;
+    padding-left: 10%;
+    width: 80%;
+    height: 100%;
+}
+
+.box {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    flex-direction: row;
+    background-color: #EBEBEB;
+    border-radius: 10px;
+    margin-bottom: 2%;
+    font-family: 'Roboto', sans-serif;
+    align-items: center;
+    padding: 2%;
+    font-size: 25px;
+    justify-content: space-between;
+}
+
+.box:hover {
+    background-color: #36c8a4;
+}
+
+.edit-btn {
+    height: 60%;
+    width: 120%;
+    border-radius: 40px;
+    font-size: medium;
+    background-color: white;
+}
+
+.edit-btn:hover{
+    background-color: #36c8a4;
+}
+
+
+#reservation {
+    color: #30ad94 !important;
+}

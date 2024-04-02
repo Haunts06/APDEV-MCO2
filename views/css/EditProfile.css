@@ -1,0 +1,121 @@
+body{
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    animation: mymove 10s infinite;
+    font-family: 'Roboto', sans-serif;
+    margin-left: 20%;
+}
+
+#main {
+    display: flex;
+    flex-direction: column;
+    padding-left: 4%;
+    width: 80%;
+    padding-top: 30px;
+}
+
+#back-btn {
+    border-radius: 30px;
+    background-color: white;
+    font-size: 30px;
+    padding: 10px 30px 10px 30px;
+}
+
+#back-btn:hover {
+    filter: invert(100%);
+}
+
+h1 {
+    font-size: 40px;
+    margin-bottom: 0px;
+}
+
+.main p {
+    font-size: 30px;
+}
+
+#edit-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* border: 1px solid; */
+}
+
+.row1 {
+    display: flex; 
+    justify-content: space-between;
+}
+
+.col1 {
+    display: flex;
+    flex-direction: column;
+}
+
+.label-input {
+    display: flex;
+    flex-direction: column;
+    flex-basis:  100%;
+}
+
+.label-input input {
+    width: 100%;
+    border:  1px solid;
+    border-radius:  30px;
+    margin-right: 100px;
+    padding: 10px 10px 10px 10px;
+}
+
+.col2 {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-picture img{
+    max-width: 250px;
+    max-height: 250px;
+    margin-left: 0%;
+    border-radius: 50%;
+}
+
+#edit-pic-btn {
+    border: none;
+    cursor: pointer;
+    appearance: none;
+    background-color: inherit;
+}
+
+#edit-pic-btn:hover {
+    filter: opacity(30%);
+}
+
+.row2 {
+    display: flex;
+    flex-direction: row;
+}
+
+textarea {
+    max-width:  62%; 
+    min-width:  62%;
+    min-height: 200px;
+    max-height:  200px; 
+    padding: 20px 20px 20px 20px;
+    line-height: 1.5;
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    border-radius: 30px;
+}
+
+#submit-btn {
+    width: 150px;
+    border-radius: 30px;
+    background-color: #30ad94;
+    font-size: 30px;
+    padding: 10px 20px;
+    margin-top: 50px;
+    margin-left: 30%;
+}
+
+#submit-btn:hover {
+    background-color: white;
+}

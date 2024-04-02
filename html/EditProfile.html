@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lab Reservation</title>
+
+    <link href="https://fonts.google.com/share?selection.family=Inter:wght@100..900|Kumbh+Sans:wght@400;700" rel="stylesheet">
+    <link href="../css/EditProfile.css" rel="stylesheet">
+    <link href="../css/sidebar.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div id="sidebar">
+
+        <div class="title">
+            <img src="https://scontent.fmnl17-3.fna.fbcdn.net/v/t1.15752-9/422985123_753783996378459_4894069643965514189_n.png?_nc_cat=106&ccb=1-7&_nc_sid=510075&_nc_ohc=e76UgocpslkAX9jCg7q&_nc_ht=scontent.fmnl17-3.fna&oh=03_AdROebqlAFFjPMINUtt1795si5DnMKXPuj7o_l7oAoSicg&oe=65F5D9A8">
+        </div>
+
+        <div class="profile">
+            <img src="https://singifyai.fineshare.com/song-ai/covers/garfield.webp"> <p>Garfield Cat</p> <a href="Profile.html"><img src ="https://cdn-icons-png.flaticon.com/128/271/271228.png" id="arrow"> </a>
+        </div>
+
+        <div class="nav-items">
+            <div class="menu-item" id="home">
+                <a href="index.html"><p>Home</p></a> 
+            </div>
+
+            <div class="menu-item" id="reservation">
+                <a href="Reservation.html"><p>Reservation</p></a>
+            </div>
+
+            <div class="menu-item" id="help">
+                <a href="HelpDesk.html"><p>Help</p></a>
+            </div>
+
+            <div class="menu-item" id="logout">
+                <a href="LoginPage.html"><p>Log Out</p></a>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="main">
+        <form action="index.html">
+            <button type="submit" id="back-btn">Back</button>
+        </form>
+
+        <h1>Edit Profile Details</h1>
+        <p> Here you can edit your profile details here.</p>
+
+        <form id="edit-form">
+            <div class="row1">
+                <div class="col1">
+                    <div class="label-input">
+                        <p> First Name </p>
+                        <input type="textbox" id="first-name">
+                    </div>
+                    <div class="label-input">
+                        <p> ID Number </p>
+                        <input type="textbox" id="ID_no">
+                    </div>
+                </div>
+                
+                <div class="col2">
+                    <div class="label-input">
+                        <p> Last Name </p>
+                        <input type="textbox" id="last-name">
+                    </div>
+                    <div class="label-input">
+                        <p> E-mail </p>
+                        <input type="textbox" id="email">
+                    </div>
+                </div>
+                <div class="profile-picture">
+                    <img src="https://singifyai.fineshare.com/song-ai/covers/garfield.webp" id="profile-picture">
+                    <button id="edit-pic-btn" ><img src="https://media.istockphoto.com/id/1161405325/vector/pencil-icon-isolated-of-flat-style.jpg?s=612x612&w=0&k=20&c=UvRnN79GjWPIT4o28k232_mG05G_-3GNxL8deiNqmyk=" id="edit" alt="buttonpng"></button>
+                </div>
+            </div>
+
+            <div class="label-input">
+                <p>Description</p>
+                <textarea type="textbox" id="description" required></textarea>
+            </div>
+
+            <button type="submit" id="submit-btn">Submit</button>
+            
+        </form>
+
+        
+    </div>
+        
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/reservation.js"></script>
+</body>
+
+</html>

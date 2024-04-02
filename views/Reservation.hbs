@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lab Reservation</title>
+
+</head>
+
+<body>
+    <div id="main">
+
+        <h1>Reservation List</h1>
+
+        <p class="lab-data">
+        <form method = "POST" action = "/selectlab">
+                <select id = "lab-select" name ="labName"> 
+                {{#each labs}} 
+                <option id = "{{labs.id}}">{{name}}</option>
+                {{/each}}
+                </select>
+            <p id="lab-name"><b>{{selectedLab.name}}</b></p>
+            <p id="lab-status"><b>Status:</b> {{selectedLab.reservationData.status}}</p>
+            <p id="lab-slots"><b>Slots:</b> {{labUsage}} / {{selectedLab.capacity}}</p> 
+        </p>
+
+        <h2> Reserve Date </h2>
+
+        <div class="grid-container">
+            {{#each reserveDate}}
+                <div class="grid-item" onclick="selectDate(this)" value="{{month}} {{date}}" name="date">
+                    <div class="day">{{day}}</div>
+                    <div class="date-month">
+                        <div class="date">{{date}}</div>
+                        <div class="month">{{month}}</div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+        
+        <h2>Select Time</h2>
+        <div>
+        <select name="time" onchange = "updateSelectedTime(this.value)">
+            <option value="8:30 AM">8:30 AM</option>
+            <option value="9:30 AM">9:30 AM</option>
+            <option value="10:30 AM">10:30 AM</option>
+            <option value="11:30 AM">11:30 AM</option>
+            <option value="12:30 PM">12:30 PM</option>
+            <option value="1:30 PM">1:30 PM</option>
+            <option value="2:30 PM">2:30 PM</option>
+            <option value="3:30 PM">3:30 PM</option>
+            <option value="4:30 PM">4:30 PM</option>
+        </select>
+
+        <input type="hidden" id="selectedDate" name="selectedDate" required>
+
+        <input type = "submit" />
+        </div>
+        </form>
+
+        <div class="room-details">
+            <h2 id="details">Details</h2>
+            <p><b>Name:</b> {{user.fname}}{{user.lname}}</p>
+            <p><b>ID Number:</b> {{user.id}}</p>
+            <p><b>Email:</b> {{user.email}}</p>
+        </div>
+
+        <div class="seat-status">
+            <div id="available-dot"><div id="inner-dot"></div></div>
+            <div class="status-text">Available</div>
+            <div id="occupied-dot"></div>
+            <div class="status-text">Occupied</div>
+            <div id="selected-dot"></div>
+            <div class="status-text">Selected</div>
+        </div>
+
+        <form method = "POST" class="grid-status-container" id="grid-container" action = "/reserve">
+                {{#each selectedLab}}
+                    {{#each reservationData}}
+                        {{#each reservationList}}
+                            {{#if this.isOccupied}}
+                                <div class="grid-status-item occupied" id={{this.SlotID}}>{{this.SlotID}}</div>
+                            {{else}}
+                                <div class="grid-status-item" id={{this.SlotID}} data-slotid={{this.SlotID}}>{{this.SlotID}}</div>
+                            {{/if}}
+                        {{/each}}
+                    {{/each}}
+                 {{/each}}
+        </form>
+    </div>      
+</body>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="js/reservation.js"></script>
+
+</html>

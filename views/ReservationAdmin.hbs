@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lab Reservation</title>
+</head>
+<body>
+    <div id="main">
+        <form method="GET" action = "/admin/index">
+            <button type="submit">Back</button>
+        </form>
+
+        <h1>Reservation List</h1>
+
+        <p class="lab-data">
+            <form method="POST" action="">
+                <select name="lab-select" name="labName">
+                {{#each labs}}
+                <option id="{{labs.id}}">{{name}}</option>
+                {{/each}}
+                </select>
+                <input type="submit" value="Select Lab" />
+            </form>
+            <p id="lab-name"><b>Laboratory 1</b></p>
+            <p id="lab-status"><b>Status:</b> Available</p>
+            <p id="lab-slots"><b>Slots:</b> 5 / 25</p> 
+        </p>
+
+        <h2> Reserve Date</h2>
+
+        <div class="grid-container">
+            {{#each days}}
+                <div class="grid-item">
+                    <div class="day">{{this.day}}</div>
+                    <div class="date-month">
+                        <div class="date">{{this.date}}</div>
+                        <div class="month">{{this.month}}</div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+        <h2>Select Time</h2>
+        <select name="Time" id="select-time">
+            <option value="8:30 AM">8:30 AM</option>
+            <option value="9:30 AM">9:30 AM</option>
+            <option value="10:30 AM">10:30 AM</option>
+            <option value="11:30 AM">11:30 AM</option>
+            <option value="12:30 PM">12:30 PM</option>
+            <option value="1:30 AM">1:30 PM</option>
+            <option value="2:30 AM">2:30 PM</option>
+            <option value="3:30 AM">3:30 PM</option>
+            <option value="4:30 AM">4:30 PM</option>
+        </select>
+
+        <div class="room-details">
+            <h2 id="details">Details</h2>
+            <p><b>User:</b></p>
+            <p><b>Name:</b> Garfield Bol</p>
+            <p><b>ID Number:</b> 123456789</p>
+            <p><b>Email:</b> garfield_boi@dlsu.edu.ph</p>
+        </div>
+
+        <div class="seat-status">
+            <div id="available-dot"><div id="inner-dot"></div></div>
+            <div class="status-text">Available</div>
+            <div id="occupied-dot"></div>
+            <div class="status-text">Occupied</div>
+            <div id="selected-dot"></div>
+            <div class="status-text">Selected</div>
+        </div>
+
+        <div class="grid-status-container">
+            {{#each gridItems}}
+                <div class="grid-status-item" id="{{this}}">{{this}}</div>
+            {{/each}}
+        </div>
+
+        <form method="POST">
+            <button type="submit" id="edit-btn">Edit</button>
+        </form>
+
+        <form method="POST" action="ReservationAdminEdit.html">
+            <button type="submit" id="reserve-btn">Reserve</button>
+        </form>
+
+        <form method="POST">
+            <buttong type="submit" id="remove-btn">Remove</button>
+        </form>
+
+    </div>
+        
+
+</body>
+
+</html>

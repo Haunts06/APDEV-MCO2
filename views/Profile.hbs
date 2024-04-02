@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lab Reservation</title>
+
+
+</head>
+<body>
+    <div id="main">
+        <h1>My Profile</h1>
+        <div class="profile-container"> 
+            <img src="{{user.profilepic}}">
+            <div class="profile-content">
+                <div class="box" id="firstCol"><p><b>Name:</b> {{user.fname}} {{user.lname}}</p></div>
+                <div class="box" id="secondCol"><p><b>ID:</b> {{user.id}}</p></div>
+                <div class="fullRow"><p><b>Email: </b></p> {{user.email}}</div>
+                <div class="description1"><p><b>Description:</b></p>{{user.description1}}<br></div>
+                <div class="description2"><a href= '/EditProfile' id="Edit">Edit</a></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
