@@ -3,7 +3,6 @@ const Handlebars = require('handlebars');
 function customDate(day, date, month) {
     this.day = day;
     this.date = date;
-    // this.monthStr = monthStr;
     this.month = month;
 }
 
@@ -39,10 +38,11 @@ async function getNextFiveWeekdays() {
     return nextDays;
 }
 
-async function availableCapacity(Reservations) {
-    let counter = 0
-    for(const reservation of Reservations) {
-        if(reservation.isOccupied) {
+async function availableCapacity(selectedLab) {
+    let counter = 0;
+
+    for(let i = 0; i < selectedLab.length; i++) {
+        if(selectedLab[i].isOccupied) {
             counter++;
         }
     }
@@ -50,20 +50,27 @@ async function availableCapacity(Reservations) {
     return counter;
 }
 
-Handlebars.registerHelper('renderSlots', function(selectedData, options) {
-    let output = '';
-    const reservationData = selectedData.reservationData;
-    console.log(selectedData.reservationData);
-    reservationData.forEach(slot => {
-        if (slot.isOccupied) {
-            output += `<div class="grid-status-item occupied" id="${slot.SlotID}">${slot.SlotID}</div>`;
-        } else {
-            output += `<button type="submit" class="grid-status-item" id="${slot.SlotID}" name="SlotID" value="${slot.SlotID}">${slot.SlotID}</button>`;
-        }
-    });
-    return output;
-});
+async function updateDetails(labDetails, usage) {
+    if(usage == labDetails.capcity) {
+        labDetails.status = "Full";
+    } 
+    return labDetails;
+} 
 
-module.exports = { availableCapacity, getNextFiveWeekdays, availableCapacity };
+async function createReservation(UserID, SlotID, labName, date, time){
+
+    // find the specific lab reservation list with the params labName date and time
+    await Laboratory.findOneAndUpdate(
+        { name: labName, "reservationData.reservationList.date": date,"reservationData.reservationList.time": time }, 
+        { $inc: { "reservationData.reservationList.usage": 1} },
+        { $set: { "reservationData.reservationList.$[elem].UserID": UserID, "reservationData.reservationList.$[elem].isOccupied": true } },
+        { 
+            arrayFilters: [{ "elem.SlotID": SlotID, "elem.isOccupied": false }],
+            new: true 
+        }
+    );
+} 
+
+module.exports = { getNextFiveWeekdays, updateDetails, availableCapacity, createReservation };
  
 

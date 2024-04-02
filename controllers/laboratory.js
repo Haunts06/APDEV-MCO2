@@ -48,30 +48,35 @@ async function createSampleLabs() {
 
 async function createNewReservationList(labName, date, time) {
     const existingLab = await Lab.findOne({name: labName}); // looks for laboratory in the database to add reservation list to
-    console.log(existingLab);
-    newReservationList = labSeats(existingLab.capacity, date, time); // creates the new list of seats for the requested date and time
+    // console.log(existingLab); // remove soon
+    let newReservationList = labSeats(existingLab.capacity, date, time); // creates the new list of seats for the requested date and time
 
     try {
-      //   // Use findOneAndUpdate to add the new reservation list to the existing lab document
         await Lab.findOneAndUpdate(
           { name: labName }, // find a lab with the given name
-          { $push: { reservationData: newReservationList } }, // push the new reservation list into the reservationData array
+          { $push: { reservationData: {reservationList: newReservationList} } }, // push the new reservation list into the reservationData array
           { new: true } // return the updated document
       );
     } catch(error) {
         console.error('Error inserting new reservation list', error);
     }
-}
 
+    return newReservationList;
+}
 
 async function checkExistingReservationList(selectedLab, labName, date, time) {
     if(selectedLab.length === 0 ) { // if reservation list we're looking of is null
-        createNewReservationList(labName, date, time);
+        selectedLab = createNewReservationList(labName, date, time);
         console.log("null");
-        console.log("created new reservation list for " + date, " at " + time);
+        console.log("created new reservation list for " + date, "at " + time);
+
+        return selectedLab;
     } else { 
-        console.log(selectedLab);
         console.log("not null");
+        let reqReservationList = await Lab.findOne({name: labName, reservationData:{reservationList: {date: date, time, time}}});
+        console.log(reqReservationList);
+        
+        return reqReservationList;
     }
 }
 

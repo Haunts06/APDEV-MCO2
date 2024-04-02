@@ -7,6 +7,7 @@ const User = require('../models/users.js');
 const Reservations = require('../models/reservations.js');
 const reserve = require('./reservation.js');
 const reservations = require('../models/reservations.js');
+const labsController = require('./laboratory.js');
 
 function errorFn(error) {
     console.error(error);
@@ -129,40 +130,42 @@ router.get('/LoginPage', function(req, resp){
 router.post('/selectlab', async (req, res) => {
     const userId = req.session.userId;
     const reqLabName = req.body.labName;
-    const selectedDate = req.body.selectedDate; // return neto is date obj
+    const selectedDate = req.body.selectedDate;
     const selectedTime = req.body.time;
-    // const formattedDate = `${selectedDate.getDate()}-${selectedDate.getMonth() + 1}`
-
-    console.log(typeof selectedDate);
-    // console.log(typeof formattedDate);
 
     req.session.date = selectedDate;
     req.session.time = selectedTime;
-    console.log(req.body);
 
+    console.log(req.body); // remove soon 
+    console.log("LAB: ", reqLabName); // remove soon
+    console.log("DATE: ", selectedDate); // remove soon
+    console.log("TIME: ", selectedTime); // remove soon
+
+    let reqReservationList = await Laboratory.aggregate([ { $match: { name: reqLabName, reservationData: { $elemMatch: { reservationList: { $elemMatch: { date: req.session.date, time: req.session.time } } } } } } ]);
     
-    console.log("LAB: ", reqLabName);
-    console.log("DATE: ", selectedDate);
-    console.log("TIME: ", selectedTime);
-
-    const selectedLab = await Laboratory.findOne({name : reqLabName}).lean();
     const user = await User.findById(userId).lean();
     const reserveDates = await reserve.getNextFiveWeekdays();
-    req.session.selectedLabName = reqLabName;  //Set lab name to current session; global variable
+    req.session.selectedLabName = reqLabName;  // set lab name to current session; global variable
     try {
+        reqReservationList = await labsController.checkExistingReservationList(reqReservationList, reqLabName, selectedDate, selectedTime);
+        // console.log(reqReservationList);
+
+        // need to add a way to update the status of the lab itself for that specific date and time
+        const usage = await reserve.availableCapacity(reqReservationList);
+        let labDetails = await Laboratory.findOne({name : reqLabName}).lean();
+        labDetails = await reserve.updateDetails(labDetails, usage);
+
         res.render('Reservation', {
             layout: 'reservation',
             title: 'Reservation',
             user, // pass the user's details to the template
             reserveDate: reserveDates,
-            selectedLab, // Pass the selected lab's details to the template
-            // labUsage: (await reserve.availableCapacity(requestedLabReservations)).toString(),
+            labDetails,
+            usage,
+            reqReservationList, // Pass the selected lab's details to the template
             labs: await Laboratory.find({}).lean(), // Pass the list of labs again for the dropdown
             date: selectedDate,
             time: selectedTime
-            // if lab not found 
-            // create a new reservations list but with a template of seats
-            // just with a different date and time 
         });
     } catch(error) { errorFn(error);}
 });
@@ -199,8 +202,9 @@ router.post('/reserve', async (req, resp) => {
 router.post('/confirm-reservation', async (req, res) => {
     const SlotID = req.body.SlotID;
     const userId = req.session.userId;
-    const labName = req.session.selectedLabName;
-    const selectedLab = await Laboratory.findOne({name : labName}).lean();
+    const reqLabName = req.session.selectedLabName;
+    const selectedDate = req.session.date;
+    const selectedTime = req.session.time;
     const user = await User.findById(userId).lean();
     const labs = await Laboratory.find({}).lean();
     const reserveDates = await reserve.getNextFiveWeekdays();
@@ -214,16 +218,7 @@ router.post('/confirm-reservation', async (req, res) => {
             reserveDate: reserveDates
         });
 
-        console.log(labName);
-
-        await Laboratory.findOneAndUpdate(
-            { name: labName }, 
-            { $set: { "reservationData.$[elem].UserID": user.id, "reservationData.$[elem].isOccupied": true, "reservationData.$[elem].date": req.session.date, "reservationData.$[elem].time": req.session.time } },
-            { 
-                arrayFilters: [{ "elem.SlotID": SlotID, "elem.isOccupied": false }],
-                new: true 
-            }
-        );
+        reserve.createReservation(userId, SlotID, reqLabName, selectedDate, selectedTime);
 
     } catch (error) {
         console.error(error);
@@ -231,21 +226,4 @@ router.post('/confirm-reservation', async (req, res) => {
     }
 });
 
-// router.post('/date', async (req, res) => {
-//     tempDate = req.body.date;
-
-//     const formattedDate = `${tempDate.getDate()}-${tempDate.getMonth() + 1}`
-
-//     req.session.date = formattedDate;
-
-//     console.log(req.session.date);
-//     console.log(formattedDate);
-//     res.redirect('/reservation');
-// });
-
-// router.post('/time', async (req, res) => {
-//     req.session.time = req.body.time;
-//     console.log(req.session.time);
-//     res.redirect('/reservation');
-// });
 module.exports = router;

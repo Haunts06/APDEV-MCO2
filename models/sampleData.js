@@ -24,7 +24,7 @@ function labSeats(seatNum) {
     seats.push({SlotID: i});
   }
 
-  const reservationData = seats.map(seat => ({
+  const reservationList = seats.map(seat => ({
     UserID: "", // Default value for UserID
     SlotID: seat.SlotID,
     isOccupied: false, // Default value for isOccupied
@@ -32,7 +32,7 @@ function labSeats(seatNum) {
     time: "" // Default value for time
   }));
 
-  return reservationData; 
+  return reservationList; 
 }
 
 async function createSampleLabs() {
@@ -44,89 +44,26 @@ async function createSampleLabs() {
   sampleLabData5 = labSeats(20);
 
   const sampleLabs = [
-    { id:1, name: 'Lab 1', capacity: 20, reservationData: sampleLabData1},
-    { id:2, name: 'Lab 2', capacity: 25, reservationData: sampleLabData2},
-    { id:3, name: 'Lab 3', capacity: 25, reservationData: sampleLabData3},
-    { id:4, name: 'Lab 4', capacity: 15, reservationData: sampleLabData4},
-    { id:5, name: 'Lab 5', capacity: 20, reservationData: sampleLabData5},
+    { id:1, name: 'Lab 1', capacity: 20, reservationData: {reservationList: sampleLabData1}},
+    { id:2, name: 'Lab 2', capacity: 25, reservationData: {reservationList: sampleLabData2}},
+    { id:3, name: 'Lab 3', capacity: 25, reservationData: {reservationList: sampleLabData3}},
+    { id:4, name: 'Lab 4', capacity: 15, reservationData: {reservationList: sampleLabData4}},
+    { id:5, name: 'Lab 5', capacity: 20, reservationData: {reservationList: sampleLabData5}},
   ]; 
+  // console.log(sampleLabData1);
 
   try {
+      await Lab.deleteMany().then(result => {
+        console.log('Previous sample reservations deleted successfully');
+      });
       await Lab.insertMany(sampleLabs)
       .then(result => {
          console.log('Sample reservations inserted successfully');
-         console.log('Reservations added to lab successfully');
       })
   } catch (error) {
     console.error('Error inserting sample labs', error);
   }
 }
 
-async function createSampleReservations() {
-  // Define sample reservations
-  const sampleReservations = [
-    { LabName: "Lab 1", SlotID: 1, isOccupied: true},
-    { LabName: "Lab 1", SlotID: 2 },
-    { LabName: "Lab 1", SlotID: 3 },
-    { LabName: "Lab 1", SlotID: 4 },
-    { LabName: "Lab 1", SlotID: 5 },
-    { LabName: "Lab 1", SlotID: 6 },
-    { LabName: "Lab 1", SlotID: 7 },
-    { LabName: "Lab 1", SlotID: 8 },
-    { LabName: "Lab 1", SlotID: 9 },
-    { LabName: "Lab 1", SlotID: 10, isOccupied: true},
-    { LabName: "Lab 1", SlotID: 11 },
-    { LabName: "Lab 1", SlotID: 12 },
-    { LabName: "Lab 1", SlotID: 13 },
-    { LabName: "Lab 1", SlotID: 14 },
-    { LabName: "Lab 1", SlotID: 15, isOccupied: true },
-    { LabName: "Lab 1", SlotID: 16 },
-    { LabName: "Lab 1", SlotID: 17 },
-    { LabName: "Lab 1", SlotID: 18 },
-    { LabName: "Lab 1", SlotID: 19 },
-    { LabName: "Lab 1", SlotID: 20, isOccupied: true},
-    { LabName: "Lab 1", SlotID: 21 },
-    { LabName: "Lab 1", SlotID: 22, isOccupied: true},
-    { LabName: "Lab 1", SlotID: 23 },
-    { LabName: "Lab 1", SlotID: 24 },
-    { LabName: "Lab 1", SlotID: 25 },
-    // Add more sample reservations as needed
-
-    { LabName: "Lab 2", SlotID: 1,},
-    { LabName: "Lab 2", SlotID: 2 },
-    { LabName: "Lab 2", SlotID: 3 },
-    { LabName: "Lab 2", SlotID: 4 },
-    { LabName: "Lab 2", SlotID: 5 },
-    { LabName: "Lab 2", SlotID: 6 },
-    { LabName: "Lab 2", SlotID: 7 },
-    { LabName: "Lab 2", SlotID: 8 },
-    { LabName: "Lab 2", SlotID: 9 },
-    { LabName: "Lab 2", SlotID: 10,},
-    { LabName: "Lab 2", SlotID: 11 },
-    { LabName: "Lab 2", SlotID: 12 },
-    { LabName: "Lab 2", SlotID: 13 },
-    { LabName: "Lab 2", SlotID: 14 },
-    { LabName: "Lab 2", SlotID: 15,},
-    { LabName: "Lab 2", SlotID: 16 },
-    { LabName: "Lab 2", SlotID: 17 },
-    { LabName: "Lab 2", SlotID: 18 },
-    { LabName: "Lab 2", SlotID: 19 },
-    { LabName: "Lab 2", SlotID: 20,},
-    { LabName: "Lab 2", SlotID: 21 },
-    { LabName: "Lab 2", SlotID: 22,},
-    { LabName: "Lab 2", SlotID: 23 },
-    { LabName: "Lab 2", SlotID: 24 },
-    { LabName: "Lab 2", SlotID: 25 },
-  ];
-
-  // Insert sample reservations into the database
-  try {
-    await Reservations.insertMany(sampleReservations);
-    console.log('Sample reservations inserted successfully');
-  } catch (error) {
-    console.error('Error inserting sample reservations', error);
-  }
-}
-
 // Export the functions
-module.exports = { createSampleUsers, createSampleLabs, createSampleReservations };
+module.exports = { createSampleUsers, createSampleLabs };

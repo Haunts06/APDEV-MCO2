@@ -17,9 +17,9 @@
                 <option id = "{{labs.id}}">{{name}}</option>
                 {{/each}}
                 </select>
-            <p id="lab-name"><b>{{selectedLab.name}}</b></p>
-            <p id="lab-status"><b>Status:</b> {{selectedLab.reservationData.status}}</p>
-            <p id="lab-slots"><b>Slots:</b> {{labUsage}} / {{selectedLab.capacity}}</p> 
+            <p id="lab-name"><b>{{labDetails.name}}</b></p>
+            <p id="lab-status"><b>Status:</b> {{labDetails.status}}</p>
+            <p id="lab-slots"><b>Slots:</b> {{usage}} / {{labDetails.capacity}}</p> 
         </p>
 
         <h2> Reserve Date </h2>
@@ -73,17 +73,13 @@
         </div>
 
         <form method = "POST" class="grid-status-container" id="grid-container" action = "/reserve">
-                {{#each selectedLab}}
-                    {{#each reservationData}}
-                        {{#each reservationList}}
-                            {{#if this.isOccupied}}
-                                <div class="grid-status-item occupied" id={{this.SlotID}}>{{this.SlotID}}</div>
-                            {{else}}
-                                <div class="grid-status-item" id={{this.SlotID}} data-slotid={{this.SlotID}}>{{this.SlotID}}</div>
-                            {{/if}}
-                        {{/each}}
-                    {{/each}}
-                 {{/each}}
+            {{#each reqReservationList}}
+                {{#if this.isOccupied}}
+                    <div class="grid-status-item occupied" id={{this.SlotID}}>{{this.SlotID}}</div>
+                {{else}}
+                    <div class="grid-status-item" id={{this.SlotID}} data-slotid={{this.SlotID}}>{{this.SlotID}}</div>
+                {{/if}}
+            {{/each}}
         </form>
     </div>      
 </body>
