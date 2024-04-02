@@ -7,7 +7,6 @@ const User = require('../models/users.js');
 const Reservations = require('../models/reservations.js');
 const reserve = require('./reservation.js');
 const reservations = require('../models/reservations.js');
-const labsController = require('./laboratory.js');
 
 function errorFn(error) {
     console.error(error);
@@ -130,61 +129,40 @@ router.get('/LoginPage', function(req, resp){
 router.post('/selectlab', async (req, res) => {
     const userId = req.session.userId;
     const reqLabName = req.body.labName;
-    const selectedDate = req.body.selectedDate;
+    const selectedDate = req.body.selectedDate; // return neto is date obj
     const selectedTime = req.body.time;
+    // const formattedDate = `${selectedDate.getDate()}-${selectedDate.getMonth() + 1}`
+
+    console.log(typeof selectedDate);
+    // console.log(typeof formattedDate);
 
     req.session.date = selectedDate;
     req.session.time = selectedTime;
+    console.log(req.body);
 
-    console.log(req.body); // remove soon 
-    console.log("LAB: ", reqLabName); // remove soon
-    console.log("DATE: ", selectedDate); // remove soon
-    console.log("TIME: ", selectedTime); // remove soon
+    
+    console.log("LAB: ", reqLabName);
+    console.log("DATE: ", selectedDate);
+    console.log("TIME: ", selectedTime);
 
-    // const selectedLab = await Laboratory.find({name: reqLabName, reservationData: { $elemMatch: {reservationList: {$elemMatch: { date: req.session.date, time: req.session.time }}}}});
-    // const selectedLab = await Laboratory.aggregate([
-    //     { $match: { name: reqLabName, 
-    //                 "reservationData.reservationList.date": req.session.date,
-    //                 "reservationData.reservationList.time": req.session.time} }
-    // ]);
-    const selectedLab = await Laboratory.aggregate([
-        { $match: { name: reqLabName, reservationData: { $elemMatch: { reservationList: { $elemMatch: { date: req.session.date, time: req.session.time } } } } } }
-        ]);
-       
+    const selectedLab = await Laboratory.findOne({name : reqLabName}).lean();
     const user = await User.findById(userId).lean();
     const reserveDates = await reserve.getNextFiveWeekdays();
-    req.session.selectedLabName = reqLabName;  // set lab name to current session; global variable
+    req.session.selectedLabName = reqLabName;  //Set lab name to current session; global variable
     try {
-
-        labsController.checkExistingReservationList(selectedLab, reqLabName, selectedDate, selectedTime);
-
-        // if(selectedLab === null ) {
-        //     console.log(typeof selectedLab);
-        //     console.log("null");
-        // } else {        
-        //     console.log(typeof selectedLab);
-        //     console.log("list found!");
-        //     // console.log(selectedLab.reservationData);
-        //     selectedLab.forEach(lab => {
-        //         lab.reservationData.forEach(data => {
-        //            data.reservationList.forEach(reservation => {
-        //              console.log(reservation); // This will log each object inside the reservationList array
-        //            });
-        //         });
-        //     });
-
-        // }
-
         res.render('Reservation', {
             layout: 'reservation',
             title: 'Reservation',
             user, // pass the user's details to the template
             reserveDate: reserveDates,
             selectedLab, // Pass the selected lab's details to the template
-            // labUsage: (await reserve.availableCapacity(selectedLab)).toString(),
+            // labUsage: (await reserve.availableCapacity(requestedLabReservations)).toString(),
             labs: await Laboratory.find({}).lean(), // Pass the list of labs again for the dropdown
             date: selectedDate,
             time: selectedTime
+            // if lab not found 
+            // create a new reservations list but with a template of seats
+            // just with a different date and time 
         });
     } catch(error) { errorFn(error);}
 });
@@ -222,9 +200,7 @@ router.post('/confirm-reservation', async (req, res) => {
     const SlotID = req.body.SlotID;
     const userId = req.session.userId;
     const labName = req.session.selectedLabName;
-    const selectedLab = await Laboratory.findOne({name: labName, reservationData: { $elemMatch: { date: req.session.date, time: req.session.time }}});
-    console.log("finding for (date): " + req.session.date);
-    console.log("finding for (time): " + req.session.time);
+    const selectedLab = await Laboratory.findOne({name : labName}).lean();
     const user = await User.findById(userId).lean();
     const labs = await Laboratory.find({}).lean();
     const reserveDates = await reserve.getNextFiveWeekdays();
@@ -238,16 +214,15 @@ router.post('/confirm-reservation', async (req, res) => {
             reserveDate: reserveDates
         });
 
-        // if lab not found 
-            // create a new reservations list but with a template of seats
-            // just with a different date and time 
-
         console.log(labName);
 
         await Laboratory.findOneAndUpdate(
             { name: labName }, 
             { $set: { "reservationData.$[elem].UserID": user.id, "reservationData.$[elem].isOccupied": true, "reservationData.$[elem].date": req.session.date, "reservationData.$[elem].time": req.session.time } },
-            { arrayFilters: [{ "elem.SlotID": SlotID, "elem.isOccupied": false }], new: true }
+            { 
+                arrayFilters: [{ "elem.SlotID": SlotID, "elem.isOccupied": false }],
+                new: true 
+            }
         );
 
     } catch (error) {

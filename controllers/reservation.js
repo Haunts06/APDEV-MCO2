@@ -3,6 +3,7 @@ const Handlebars = require('handlebars');
 function customDate(day, date, month) {
     this.day = day;
     this.date = date;
+    // this.monthStr = monthStr;
     this.month = month;
 }
 
@@ -38,9 +39,9 @@ async function getNextFiveWeekdays() {
     return nextDays;
 }
 
-async function availableCapacity(Laboratory) {
+async function availableCapacity(Reservations) {
     let counter = 0
-    for(const reservation of Laboratory.reservationData ) {
+    for(const reservation of Reservations) {
         if(reservation.isOccupied) {
             counter++;
         }
@@ -48,6 +49,20 @@ async function availableCapacity(Laboratory) {
 
     return counter;
 }
+
+Handlebars.registerHelper('renderSlots', function(selectedData, options) {
+    let output = '';
+    const reservationData = selectedData.reservationData;
+    console.log(selectedData.reservationData);
+    reservationData.forEach(slot => {
+        if (slot.isOccupied) {
+            output += `<div class="grid-status-item occupied" id="${slot.SlotID}">${slot.SlotID}</div>`;
+        } else {
+            output += `<button type="submit" class="grid-status-item" id="${slot.SlotID}" name="SlotID" value="${slot.SlotID}">${slot.SlotID}</button>`;
+        }
+    });
+    return output;
+});
 
 module.exports = { availableCapacity, getNextFiveWeekdays, availableCapacity };
  

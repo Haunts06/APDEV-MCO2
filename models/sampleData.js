@@ -24,7 +24,7 @@ function labSeats(seatNum) {
     seats.push({SlotID: i});
   }
 
-  const reservationList = seats.map(seat => ({
+  const reservationData = seats.map(seat => ({
     UserID: "", // Default value for UserID
     SlotID: seat.SlotID,
     isOccupied: false, // Default value for isOccupied
@@ -32,7 +32,7 @@ function labSeats(seatNum) {
     time: "" // Default value for time
   }));
 
-  return reservationList; 
+  return reservationData; 
 }
 
 async function createSampleLabs() {
@@ -44,21 +44,18 @@ async function createSampleLabs() {
   sampleLabData5 = labSeats(20);
 
   const sampleLabs = [
-    { id:1, name: 'Lab 1', capacity: 20, reservationData: {reservationList: sampleLabData1}},
-    { id:2, name: 'Lab 2', capacity: 25, reservationData: {reservationList: sampleLabData2}},
-    { id:3, name: 'Lab 3', capacity: 25, reservationData: {reservationList: sampleLabData3}},
-    { id:4, name: 'Lab 4', capacity: 15, reservationData: {reservationList: sampleLabData4}},
-    { id:5, name: 'Lab 5', capacity: 20, reservationData: {reservationList: sampleLabData5}},
+    { id:1, name: 'Lab 1', capacity: 20, reservationData: sampleLabData1},
+    { id:2, name: 'Lab 2', capacity: 25, reservationData: sampleLabData2},
+    { id:3, name: 'Lab 3', capacity: 25, reservationData: sampleLabData3},
+    { id:4, name: 'Lab 4', capacity: 15, reservationData: sampleLabData4},
+    { id:5, name: 'Lab 5', capacity: 20, reservationData: sampleLabData5},
   ]; 
-  // console.log(sampleLabData1);
 
   try {
-      await Lab.deleteMany().then(result => {
-        console.log('Previous sample reservations deleted successfully');
-      });
       await Lab.insertMany(sampleLabs)
       .then(result => {
          console.log('Sample reservations inserted successfully');
+         console.log('Reservations added to lab successfully');
       })
   } catch (error) {
     console.error('Error inserting sample labs', error);

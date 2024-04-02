@@ -18,7 +18,7 @@ app.use(session({
 
 const bodyParser = require('body-parser');
 app.use(express.json()); 
-// app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 const handlebars = require('express-handlebars');
 app.use(express.static(path.join(__dirname, 'views')));

@@ -3,14 +3,16 @@ const User = require('../models/users.js');
 async function handleLogin(req, res) {
     try {
         const user = await User.findOne({ id: req.body.loginId });
-        // if(!user) {
-        //     console.log('User not found');
-        //     return res.redirect('/LoginPage');
-        // }
         if (user.accountType == 'ADMIN'){
             return res.redirect('/admin/index');
+        }
+        else{
+        if (!user) {
+            // If no user is found, redirect with error message
+            console.log('User not found');
+            return res.redirect('/LoginPage');
         } else {
-            // for simplicity, compare directly
+            // Assuming you're not hashing passwords for simplicity, compare directly
             if (req.body.loginPass === user.password) {
                 // If passwords match, redirect to the main page or dashboard
                 console.log('Nice');
@@ -22,6 +24,7 @@ async function handleLogin(req, res) {
                 return res.redirect('/LoginPage');
             }
         }
+    }
     } catch (err) {
         console.error(err);
         return res.redirect('/LoginPage');
