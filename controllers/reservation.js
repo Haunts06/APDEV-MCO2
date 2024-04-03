@@ -51,40 +51,13 @@ async function availableCapacity(selectedLab) {
     return counter;
 }
 
-async function updateDetails(labDetails, usage) {
-    if(usage == labDetails.capcity) {
-        labDetails.status = "Full";
+async function updateDetails(labDetails) {
+    if(labDetails[0].usage == labDetails[0].capacity) {
+        labDetails[0].status = "Full";
     } 
     return labDetails;
 } 
 
-async function createReservation(UserID, SlotID, labName, date, time){
-
-    // find the specific lab reservation list with the params labName date and time
-    try {
-        const updatedDocument = await Lab.findOneAndUpdate(
-            { name: labName, "reservationData.reservationList.date": date, "reservationData.reservationList.time": time }, 
-            { $inc: { "reservationData.reservationList.usage": 1} },
-            { $set: { "reservationData.reservationList.UserID": UserID, "reservationData.reservationList.isOccupied": true } },
-            { 
-                arrayFilters: [{ "reservationList.reservationList.SlotID": SlotID, "reservationList.reservationList.reservation.isOccupied": false, }],
-                new: true 
-            }
-        );
-
-        await updatedDocument.save();
-
-        if (updatedDocument) {
-            console.log('Reservation updated successfully:', );
-            console.log(updatedDocument);
-            // The document was found and updated
-        } else {
-            console.log('No reservation found to update.');
-            // No document was found that matches the criteria
-        }
-    } catch(error) {console.log(error);}
-} 
-
-module.exports = { getNextFiveWeekdays, updateDetails, availableCapacity, createReservation };
+module.exports = { getNextFiveWeekdays, updateDetails, availableCapacity };
  
 

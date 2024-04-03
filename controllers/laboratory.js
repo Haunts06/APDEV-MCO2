@@ -50,7 +50,6 @@ async function createNewReservationList(labName, date, time) {
     const existingLab = await Lab.findOne({name: labName}); // looks for laboratory in the database to add reservation list to
     
     let newReservationList = labSeats(existingLab.capacity, date, time); // creates the new list of seats for the requested date and time
-
     try {
         await Lab.findOneAndUpdate(
           { name: labName }, // find a lab with the given name
@@ -60,17 +59,14 @@ async function createNewReservationList(labName, date, time) {
     } catch(error) {
         console.error('Error inserting new reservation list', error);
     }
-
-    return newReservationList;
 }
 
 async function checkExistingReservationList(selectedLab, labName, date, time) {
     if(selectedLab.length == 0 ) { // if reservation list we're looking of is null
-        selectedLab = await createNewReservationList(labName, date, time);
+        await createNewReservationList(labName, date, time);
         console.log("null");
         console.log("created new reservation list for " + date, "at " + time);
     } 
-    return selectedLab;
 }
 
-module.exports = {checkExistingReservationList}
+module.exports = {checkExistingReservationList} 

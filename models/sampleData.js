@@ -44,11 +44,11 @@ async function createSampleLabs() {
   sampleLabData5 = labSeats(20);
 
   const sampleLabs = [
-    { id:1, name: 'Lab 1', capacity: 20, reservationData: {reservationList: sampleLabData1}},
-    { id:2, name: 'Lab 2', capacity: 25, reservationData: {reservationList: sampleLabData2}},
-    { id:3, name: 'Lab 3', capacity: 25, reservationData: {reservationList: sampleLabData3}},
-    { id:4, name: 'Lab 4', capacity: 15, reservationData: {reservationList: sampleLabData4}},
-    { id:5, name: 'Lab 5', capacity: 20, reservationData: {reservationList: sampleLabData5}},
+    { id:1, name: 'Lab 1', capacity: 20, },
+    { id:2, name: 'Lab 2', capacity: 25, },
+    { id:3, name: 'Lab 3', capacity: 25, },
+    { id:4, name: 'Lab 4', capacity: 15, },
+    { id:5, name: 'Lab 5', capacity: 20, },
   ]; 
   // console.log(sampleLabData1);
 

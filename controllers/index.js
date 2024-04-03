@@ -141,52 +141,47 @@ router.post('/selectlab', async (req, res) => {
     console.log("DATE: ", selectedDate); // remove soon
     console.log("TIME: ", selectedTime); // remove soon
 
-    let reqReservationList =  await Laboratory.aggregate([{
-        $match: {
-          name: reqLabName, // Assuming you're looking for documents with name "Lab 1"
-        },
-        },
-        {
-            $unwind: "$reservationData", // Deconstruct the reservationData array
-        },
-        {
-            $unwind: "$reservationData.reservationList", // Deconstruct the reservationList array
-        },
-        {
-            $match: {
-            "reservationData.reservationList.date": selectedDate,
-            "reservationData.reservationList.time": selectedTime
-            },
-        },
-        {
-            $project: {
-            _id: 0, // Exclude the _id field
-            reservation: "$reservationData.reservationList" , // Include only the reservationList field
-            },
-        },
+    let labDetails = [];
+
+    let reqReservationList = await Laboratory.aggregate([{ $match: { name: reqLabName, },},{ $unwind: "$reservationData", }, { $unwind: "$reservationData.reservationList", }, 
+    { $match: { "reservationData.reservationList.date": selectedDate, "reservationData.reservationList.time": selectedTime }, }, 
+    { $project: { _id: 0, reservation: "$reservationData.reservationList", }, }, ]);
+
+    if(reqReservationList.length == 0) { // this if statement makes sure that what details is passed to the hbs is complete and not empty
+        await labsController.checkExistingReservationList(reqReservationList, reqLabName, selectedDate, selectedTime);
+        reqReservationList = await Laboratory.aggregate([{ $match: { name: reqLabName, },},{ $unwind: "$reservationData", }, { $unwind: "$reservationData.reservationList", }, 
+                                                         { $match: { "reservationData.reservationList.date": selectedDate, "reservationData.reservationList.time": selectedTime }, }, 
+                                                         { $project: { _id: 0, reservation: "$reservationData.reservationList", }, }, ] );
+    }
+
+    labDetails = await Laboratory.aggregate([
+        { $match: { name: reqLabName } },
+        { $unwind: "$reservationData" },
+        { $unwind: "$reservationData.reservationList" },
+        { $match: { "reservationData.reservationList.date": selectedDate, "reservationData.reservationList.time": selectedTime } },
+        { $project: { _id: 0, "usage": "$reservationData.usage", "capacity": "$capacity", "status": "$reservationData.status" } },
+        { $limit: 1 }
     ]);
-    // reqReservationList.forEach(item => {
-    //     console.log(item);
-    // })
+
+
+    labDetails = await reserve.updateDetails(labDetails);
+
+    console.log(labDetails);
+
     
     const user = await User.findById(userId).lean();
     const reserveDates = await reserve.getNextFiveWeekdays();
     req.session.selectedLabName = reqLabName;  // set lab name to current session; global variable
     try {
-        reqReservationList = await labsController.checkExistingReservationList(reqReservationList, reqLabName, selectedDate, selectedTime);
 
-        // need to add a way to update the status of the lab itself for that specific date and time
-        const usage = await reserve.availableCapacity(reqReservationList);
-        let labDetails = await Laboratory.findOne({name : reqLabName}).lean();
-        labDetails = await reserve.updateDetails(labDetails, usage);
 
         res.render('Reservation', {
             layout: 'reservation',
             title: 'Reservation',
             user, // pass the user's details to the template
             reserveDate: reserveDates,
+            labName: reqLabName,
             labDetails,
-            usage,
             reqReservationList, // Pass the selected lab's details to the template
             labs: await Laboratory.find({}).lean(), // Pass the list of labs again for the dropdown
             date: selectedDate,
@@ -243,7 +238,49 @@ router.post('/confirm-reservation', async (req, res) => {
             reserveDate: reserveDates
         });
 
-        reserve.createReservation(userId, SlotID, reqLabName, selectedDate, selectedTime);
+        // reserve.createReservation(userId, SlotID, reqLabName, selectedDate, selectedTime);
+        try {
+            // const reservation = await Laboratory.reservationData.findOne({"reservationList.SlotID" : SlotID}, {"reservationList.date" : selectedDate});
+            // console.log(reservation);
+
+            // Find the reservation list that contains the reservation with the specified date and time
+            // Assuming you want to update the first reservation that matches the SlotID, date, and time
+            const updatedDocument = await Laboratory.findOneAndUpdate(
+                { 
+                    name: reqLabName,
+                }, 
+                { 
+                    $set: {
+                        "reservationData.$[].reservationList.$[reservation].UserID": user.id,
+                        "reservationData.$[].reservationList.$[reservation].isOccupied": true,
+                    },
+                },
+                { 
+                    arrayFilters: [
+                        { "reservation.SlotID": SlotID, "reservation.date": selectedDate, "reservation.time": selectedTime, "reservation.isOccupied": false },
+                    ],
+                    new: true, // This option returns the updated document
+                }
+            );
+            await Laboratory.findOneAndUpdate(
+                { 
+                    name: reqLabName,
+                    "reservationData.reservationList.date": selectedDate, 
+                    "reservationData.reservationList.time": selectedTime,
+                }, 
+                { 
+                    $inc: {
+                        "reservationData.$.usage": 1
+                    }
+                },
+                { 
+                    new: true, // This option returns the updated document
+                }
+            );
+    
+            // console.log(updatedDocument.reservationData); // remove soon
+        } catch(error) {console.log(error);}
+
 
     } catch (error) {
         console.error(error);
