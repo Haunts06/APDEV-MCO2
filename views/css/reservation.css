@@ -25,7 +25,14 @@ body{
 button:hover {
     filter: invert(100%);
 } */
-
+.tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 1000;
+}
 h1 {
     font-size: 50px;
 }

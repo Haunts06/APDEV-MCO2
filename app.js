@@ -4,7 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require("express-session");
 const MongoStore = require('connect-mongo');
-
+const bcrypt = require('bcryptjs');
 
 app.use(session({
     secret: 'secretpo',
