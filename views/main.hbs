@@ -32,6 +32,13 @@
                 <input type="hidden" name="time" value="{{reservation.time}}">
                 <button type="submit" onclick="confirmDelete(event)">Cancel</button>
             </form>
+            <form method="POST" action="/editReserve">
+                <input type="hidden" name="labName" value="{{labName}}">
+                <input type="hidden" name="SlotID" value="{{reservation.SlotID}}">
+                <input type="hidden" name="date" value="{{reservation.date}}">
+                <input type="hidden" name="time" value="{{reservation.time}}">
+                <button type="submit" onclick="confirmEdit(event)">Edit</button>
+            </form>
         </td>
     </tr>
     {{/each}}
@@ -46,6 +53,12 @@
 </div>
 
 <script>
+    function confirmEdit(event) {
+        var answer = confirm('Are you sure you want to edit this reservation?');
+        if (!answer) {
+            event.preventDefault(); // Prevent form submission if cancellation
+        }
+    }
     function confirmDelete(event) {
         var answer = confirm('Are you sure you want to delete this reservation?');
         if (!answer) {

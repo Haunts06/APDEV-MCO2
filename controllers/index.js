@@ -366,5 +366,37 @@ router.post('/deleteReserve', async (req, res) => {
     }
 });
 
+router.post('/editReserve', async (req, res) => {
+    const { labName, SlotID, date, time } = req.body;
+    console.log("LabName: " + labName, "Date: " + date + " Time: " + time + " Slot ID: " + SlotID);
+    try {
+        const updatedLab = await Laboratory.findOneAndUpdate(
+            { 
+                name: labName,
+            },
+            {
+                $set: {
+                    "reservationData.$[].reservationList.$[inner].UserID":  "", 
+                    "reservationData.$[].reservationList.$[inner].isOccupied": false 
+                },
+                $inc: {
+                    "reservationData.$[].usage": -1
+                },
+            },
+            {
+                arrayFilters: [
+                    { "inner.SlotID": SlotID, "inner.date": date, "inner.time": time },
+                ],
+                new: true
+            }
+        );
+
+        console.log("Reservation deleted successfully");
+        res.redirect("/reservation");
+    } catch (error) {
+        console.error("Error deleting reservation:", error);
+        res.status(500).send("Error deleting reservation");
+    }
+});
 
 module.exports = router;
