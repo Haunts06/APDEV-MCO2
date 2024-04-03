@@ -166,7 +166,7 @@ router.post('/selectlab', async (req, res) => {
 
     labDetails = await reserve.updateDetails(labDetails);
 
-    console.log(labDetails);
+    console.log(labDetails); // remove soon
 
     
     const user = await User.findById(userId).lean();
