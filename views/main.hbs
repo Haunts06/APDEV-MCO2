@@ -1,10 +1,55 @@
 <div id="main">
-    <h1>Laboratories List</h1>
-    {{#each laboratories}}
+    <h1>Your Reservations</h1>
+    <table>
+        <tr>
+            {{!-- Lab column --}}
+            <th>Lab Number</th>
+            
+            {{!-- Slot column --}}
+            <th>Slot Number</th>
+            
+            {{!-- Date column --}}
+            <th>Date</th> 
+            
+            {{!-- Time column --}}
+            <th>Time</th>
+            
+            {{!-- Edit/Cancel column --}}
+            <th>Edit/Cancel</th>
+        </tr>
+
+       {{#each reservations}}
+    <tr>
+        <td>{{labName}}</td>
+        <td>{{reservation.SlotID}}</td>
+        <td>{{reservation.date}}</td>
+        <td>{{reservation.time}}</td>
+        <td>
+            <form method="POST" action="/deleteReserve">
+                <input type="hidden" name="labName" value="{{labName}}">
+                <input type="hidden" name="SlotID" value="{{reservation.SlotID}}">
+                <input type="hidden" name="date" value="{{reservation.date}}">
+                <input type="hidden" name="time" value="{{reservation.time}}">
+                <button type="submit" onclick="confirmDelete(event)">Cancel</button>
+            </form>
+        </td>
+    </tr>
+    {{/each}}
+    </table>
+    {{!-- {{#each laboratories}}
         <div class="box" id="lab{{id}}">
             <p><b>{{name}}</b></p>
             <p>{{status}}</p>
             <p><b>{{usage}}</b> out of {{capacity}}</p>
         </div>
-    {{/each}}
+    {{/each}} --}}
 </div>
+
+<script>
+    function confirmDelete(event) {
+        var answer = confirm('Are you sure you want to delete this reservation?');
+        if (!answer) {
+            event.preventDefault(); // Prevent form submission if cancellation
+        }
+    }
+</script>
