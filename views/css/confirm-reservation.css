@@ -1,0 +1,30 @@
+.body {
+    display: flex;
+    flex-direction: column;
+}
+
+.parent-container {
+    padding-left: 4%;
+    width: 80%;
+    padding-top: 30px;
+}
+
+.confirm-cancel {
+    background-color: #808080;
+    color: #fff !important;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+    flex: 1;
+    margin: 0 5px;
+}
+
+.confirm-cancel:hover {
+    background-color: #696969; 
+}

@@ -15,16 +15,6 @@ body{
     padding-top: 30px;
 }
 
-/* button {
-    border-radius: 30px;
-    background-color: white;
-    font-size: 30px;
-    padding: 10px 30px 10px 30px;
-}
-
-button:hover {
-    filter: invert(100%);
-} */
 .tooltip {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.8);
@@ -95,19 +85,6 @@ h2 {
 #reservation {
     color: aquamarine !important;
 }
-
-/* #select-time {
-    border-radius: 30px;
-    width: 15%;
-    height: 20%;
-    font-size: 30px;
-    padding-left: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    appearance: none; /* Remove default browser styling */
-    /* background: whitesmoke url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0  0  4  5'><path fill='%2330ad94' d='M2  0L0  2h4zm0  5L0  3h4z'/></svg>") no-repeat right .7em center; Custom SVG as the arrow */
-    /* background-size: .65em auto; Adjust size as needed }*/
-
 
 .room-details {
     border-radius: 25px;

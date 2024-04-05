@@ -9,6 +9,7 @@ const Reservations = require('../models/reservations.js');
 const reserve = require('./reservation.js');
 const reservations = require('../models/reservations.js');
 const labsController = require('./laboratory.js');
+const helpDesk = require('../models/helpDesk.js');
 
 function errorFn(error) {
     console.error(error);
@@ -53,6 +54,28 @@ router.get('/helpdesk', async (req,resp) => {
     });
 });
 
+router.post('/submit-helpdesk', async (req, res) => {
+    const user = await User.findById(req.session.userId).lean();
+    const { userID, userEmail, title, description} = req.body;
+
+    try {
+        res.render('helpdesk', {
+            layout: 'helpdesk',
+            title: 'Helpdesk',
+            user,
+        });
+        try {
+            const sendConcern = await helpDesk.insertMany(
+                { UserID: userID, email: userEmail, title: title, description: description}
+                );
+
+                console.log(sendConcern);
+        } catch (error) {console.log(error);}
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error processing Helpdesk concern.')
+    }
+});
 
 router.get('/home', async (req, res) => {
     try {
@@ -226,7 +249,7 @@ router.post('/selectlab', async (req, res) => {
             reserveDate: reserveDates,
             labName: reqLabName,
             labDetails,
-            reqReservationList, // Pass the selected lab's details to the template
+            reqReservationList, // pass the selected lab's details to the template
             labs: await Laboratory.find({}).lean(), // Pass the list of labs again for the dropdown
             date: selectedDate,
             time: selectedTime
@@ -283,8 +306,6 @@ router.post('/confirm-reservation', async (req, res) => {
         });
         try {
 
-            // Find the reservation list that contains the reservation with the specified date and time
-            // Assuming you want to update the first reservation that matches the SlotID, date, and time
             const updatedDocument = await Laboratory.findOneAndUpdate(
                 { 
                     name: reqLabName,

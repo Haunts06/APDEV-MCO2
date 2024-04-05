@@ -8,25 +8,25 @@
     <h1>Help Desk</h1>
     <p> Got a concern? Let us know what you are having trouble with through this form.</p>
 
-    <form id="help-form" method = "POST" action = "/404">
+    <form id="help-form" method = "POST" action = "/submit-helpdesk">
         <div class="id-email">
             <div class="label-input">
                 <p>ID Number</p>
-                <input type="textbox" id="ID_no" required>
+                <input type="textbox" name="userID" id="ID_no" required>
             </div>
             <div class="label-input" id="email-div">
                 <p>E-mail</p>
-                <input type="textbox" id="email" required>
+                <input type="textbox" name="userEmail" id="email" required>
             </div>
         </div>
 
         <div class="label-input">
             <p>Title</p>
-            <input type="textbox" id="title">
+            <input type="textbox" name="title" id="title" required>
         </div>
         <div class="label-input">
             <p>Description</p>
-            <textarea type="textbox" id="description" required></textarea>
+            <textarea type="textbox" name="description" id="description" required></textarea>
         </div>
 
         <button type="submit" id="submit-btn">Submit</button>

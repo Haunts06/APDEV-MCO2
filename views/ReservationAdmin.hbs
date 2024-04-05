@@ -2,61 +2,65 @@
 <html>
 <head>
     <title>Lab Reservation</title>
+
 </head>
+
 <body>
     <div id="main">
-        <form method="GET" action = "/admin/index">
-            <button type="submit">Back</button>
-        </form>
 
         <h1>Reservation List</h1>
 
         <p class="lab-data">
-            <form method="POST" action="">
-                <select name="lab-select" name="labName">
-                {{#each labs}}
-                <option id="{{labs.id}}">{{name}}</option>
+        <form method = "POST" action = "/selectlab">
+                <select id = "lab-select" name ="labName"> 
+                {{#each labs}} 
+                <option id = "{{labs.id}}">{{name}}</option>
                 {{/each}}
                 </select>
-                <input type="submit" value="Select Lab" />
-            </form>
-            <p id="lab-name"><b>Laboratory 1</b></p>
-            <p id="lab-status"><b>Status:</b> Available</p>
-            <p id="lab-slots"><b>Slots:</b> 5 / 25</p> 
+            <p id="lab-name"><b>{{labName}}</b></p>
+            <p id="lab-status"><b>Status:</b> {{labDetails.0.status}}</p>
+            <p id="lab-slots"><b>Slots:</b> {{labDetails.0.usage}} / {{labDetails.0.capacity}}</p>
         </p>
 
-        <h2> Reserve Date</h2>
+        <h2> Reserve Date </h2>
 
         <div class="grid-container">
-            {{#each days}}
-                <div class="grid-item">
-                    <div class="day">{{this.day}}</div>
+            {{#each reserveDate}}
+                <div class="grid-item" onclick="selectDate(this)" value="{{month}} {{date}}" name="date">
+                    <div class="day">{{day}}</div>
                     <div class="date-month">
-                        <div class="date">{{this.date}}</div>
-                        <div class="month">{{this.month}}</div>
+                        <div class="date">{{date}}</div>
+                        <div class="month">{{month}}</div>
                     </div>
                 </div>
             {{/each}}
         </div>
+        
         <h2>Select Time</h2>
-        <select name="Time" id="select-time">
+        <div>
+        <select name="time" onchange = "updateSelectedTime(this.value)">
             <option value="8:30 AM">8:30 AM</option>
             <option value="9:30 AM">9:30 AM</option>
             <option value="10:30 AM">10:30 AM</option>
             <option value="11:30 AM">11:30 AM</option>
             <option value="12:30 PM">12:30 PM</option>
-            <option value="1:30 AM">1:30 PM</option>
-            <option value="2:30 AM">2:30 PM</option>
-            <option value="3:30 AM">3:30 PM</option>
-            <option value="4:30 AM">4:30 PM</option>
+            <option value="1:30 PM">1:30 PM</option>
+            <option value="2:30 PM">2:30 PM</option>
+            <option value="3:30 PM">3:30 PM</option>
+            <option value="4:30 PM">4:30 PM</option>
         </select>
+
+        <input type="hidden" id="selectedDate" name="selectedDate" required>
+
+        <input type = "submit" />
+        </div>
+        </form>
 
         <div class="room-details">
             <h2 id="details">Details</h2>
-            <p><b>User:</b></p>
-            <p><b>Name:</b> Garfield Bol</p>
-            <p><b>ID Number:</b> 123456789</p>
-            <p><b>Email:</b> garfield_boi@dlsu.edu.ph</p>
+            <p><b>Name:</b> {{user.fname}} {{user.lname}}</p>
+            <p><b>ID Number:</b> {{user.id}}</p>
+            <p><b>Email:</b> {{user.email}}</p>
         </div>
 
         <div class="seat-status">
@@ -68,27 +72,18 @@
             <div class="status-text">Selected</div>
         </div>
 
-        <div class="grid-status-container">
-            {{#each gridItems}}
-                <div class="grid-status-item" id="{{this}}">{{this}}</div>
+        <form method = "POST" class="grid-status-container" id="grid-container" action = "/adminReserve"> 
+            {{#each reqReservationList}}
+                {{#if reservation.isOccupied}}
+                    <div class="grid-status-item occupied" value = {{reservation.UserID}} id={{reservation.SlotID}} onmouseover = "showUserIDOnHover(this)">{{reservation.SlotID}}</div>
+                {{else}}
+                    <div class="grid-status-item" id={{reservation.SlotID}} data-slotid={{reservation.SlotID}}>{{reservation.SlotID}}</div>
+                {{/if}}
             {{/each}}
-        </div>
-
-        <form method="POST">
-            <button type="submit" id="edit-btn">Edit</button>
         </form>
-
-        <form method="POST" action="ReservationAdminEdit.html">
-            <button type="submit" id="reserve-btn">Reserve</button>
-        </form>
-
-        <form method="POST">
-            <buttong type="submit" id="remove-btn">Remove</button>
-        </form>
-
-    </div>
-        
-
+    </div>      
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="js/reservation.js"></script>
 
 </html>

@@ -31,8 +31,6 @@ adminRouter.get('/index', async (req, res) => {
                 },
             },
         ]);
-
-        console.log(reservations);
         
         res.render('adminIndex', { 
             layout:'admin', 
@@ -44,14 +42,24 @@ adminRouter.get('/index', async (req, res) => {
     }
 });
 
-adminRouter.get('/ReservationAdminView', async (req, resp) => {
-    const user = await User.findById(req.session.userId).lean();
-    resp.render('ReservationAdminView', {
+adminRouter.get('/ReservationAdmin', async (req, resp) => {
+    const labs = await Laboratory.find({}).lean();
+    const reserveDates = await reserve.getNextFiveWeekdays();
+    resp.render('ReservationAdmin', {
         layout: 'reservationadmin',
         title: 'Admin Reservation',
-        user
+        labs,
+        reserveDate: reserveDates
     });
 })
+
+adminRouter.post('/reserve', async (req, resp) => {
+    console.log(req.body);
+    resp.render('confirm-reservation', { 
+        layout: 'reservation',
+        SlotID, 
+    });
+});
 
 
 
