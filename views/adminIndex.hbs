@@ -1,5 +1,8 @@
 <div id="main">
     <h1>All Reservations</h1>
+    <form method ="POST" action ="/admin/addreservation">
+    <button type = "submit">Add</button>
+    </form>
     <table>
         <tr>
             <th>ID Number</th>
@@ -28,14 +31,14 @@
         <td>{{reservation.time}}</td>
         <td>
             <div class="btn-container">
-                <form method="POST" action="/editReserve">
+                <form method="POST" action="/admin/editReserve">
                     <input type="hidden" name="labName" value="{{labName}}">
                     <input type="hidden" name="SlotID" value="{{reservation.SlotID}}">
                     <input type="hidden" name="date" value="{{reservation.date}}">
                     <input type="hidden" name="time" value="{{reservation.time}}">
                     <button class="edit-cancel-btn" type="submit" onclick="confirmEdit(event)">Edit</button>
                 </form>
-                <form method="POST" action="/deleteReserve">
+                <form method="POST" action="/admin/deleteReserve">
                     <input type="hidden" name="labName" value="{{labName}}">
                     <input type="hidden" name="SlotID" value="{{reservation.SlotID}}">
                     <input type="hidden" name="date" value="{{reservation.date}}">

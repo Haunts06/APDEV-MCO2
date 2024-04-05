@@ -9,9 +9,9 @@
     <div id="main">
 
         <h1>Reservation List</h1>
-
+        
         <p class="lab-data">
-        <form method = "POST" action = "/selectlab">
+        <form method = "POST" action = "/admin/selectlab">
                 <select id = "lab-select" name ="labName"> 
                 {{#each labs}} 
                 <option id = "{{labs.id}}">{{name}}</option>
@@ -56,6 +56,11 @@
         </div>
         </form>
 
+        <div class="room-details">
+            <h2 id="details">Details</h2>
+            <input type ="text" id ="id-input" name="newID">ID number</input>
+        </div>
+
         <div class="seat-status">
             <div id="available-dot"><div id="inner-dot"></div></div>
             <div class="status-text">Available</div>
@@ -65,7 +70,7 @@
             <div class="status-text">Selected</div>
         </div>
 
-        <form method = "POST" class="grid-status-container" id="grid-container" action = "/adminReserve"> 
+        <form method = "POST" class="grid-status-container" id="grid-container" action = "/admin/reserve"> 
             {{#each reqReservationList}}
                 {{#if reservation.isOccupied}}
                     <div class="grid-status-item occupied" value = {{reservation.UserID}} id={{reservation.SlotID}} onmouseover = "showUserIDOnHover(this)">{{reservation.SlotID}}</div>

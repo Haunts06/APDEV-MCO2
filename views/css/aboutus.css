@@ -1,0 +1,35 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background: #050517;
+    color: white;
+    margin-left: 20%; /* Adjust according to the width of your sidebar */
+    padding: 3%;
+}
+
+header {
+    text-align: center;
+    border-bottom: 3px solid black;
+    padding-bottom: 1%;
+}
+
+h1, h2 {
+    color: #30ad94;
+}
+
+main {
+    margin-top: 3%;
+}
+
+section {
+    margin-bottom: 3%;
+}
+
+footer {
+    position: fixed;
+    width: 80%; /* Adjust according to the width of your sidebar */
+    bottom: 0;
+    text-align: center;
+    border-top: 3px solid black;
+    padding-top: 1%;
+    background: #050517;
+}

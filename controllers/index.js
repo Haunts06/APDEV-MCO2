@@ -27,6 +27,11 @@ router.post('/login', function (req,resp) {
     authLogin.handleLogin(req, resp);
 });
 
+router.get('/logout', function (req, resp) {
+    req.session.destroy();
+    resp.redirect('/LoginPage');
+});
+
 router.post('/register', function (req,resp){
     authRegister.handleRegistration(req, resp);
 });
@@ -167,10 +172,15 @@ router.get('/EditProfile', async (req,resp) =>{
 
 router.post('/Profile', async (req,resp) =>{
     const user = await User.findById(req.session.userId).lean();
+    let img = '';
+    if (user.profilepic && user.profilepic.data) {
+        img = `data:${user.profilepic.contentType};base64,${user.profilepic.data.toString('base64')}`;
+    }
     resp.render('Profile',{
     layout: 'profile',
     title: 'Profile',
-    user
+    user,
+    img
     });
 });
 
@@ -192,6 +202,15 @@ router.post('/updateProfile', async (req, resp) => {
 
 router.get('/LoginPage', function(req, resp){
     resp.redirect('/');
+});
+
+router.get('/AboutUs', async (req, resp) => {
+    const user = await User.findById(req.session.userId).lean(); 
+    resp.render('AboutUs', {
+        layout: 'helpdesk',
+        title: 'About Us',
+        user
+    });
 });
 
 router.post('/selectlab', async (req, res) => {
@@ -425,7 +444,7 @@ router.post('/editReserve', async (req, res) => {
         );
         await Laboratory.findOneAndUpdate( // increment usage
                 {
-                    name: reqLabName,
+                    name: labName,
                 },
                 {
                     $inc: {

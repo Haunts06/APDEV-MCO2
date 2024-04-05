@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Reservation</title>
+    <link href="/css/confirm-reservation.css" rel="stylesheet"> 
+</head>
+<body>
+    <div class="parent-container">
+        <div class="header-text">
+        <h1>Confirm Reservation</h1>
+        </div>
+
+        <div class="confirm-reservation-container">
+            <p>Are you sure you want to reserve this slot?</p>
+            <div class="button-container">
+                <form method="POST" action="/admin/confirm-reservation">
+                    <input type="hidden" name="SlotID" value="{{SlotID}}">
+                    <button class="confirm-cancel" type="submit">Confirm</button>
+                    <a class="confirm-cancel" href="/admin/reservation">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
