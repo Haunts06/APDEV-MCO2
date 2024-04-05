@@ -186,17 +186,31 @@ router.post('/Profile', async (req,resp) =>{
 
 router.post('/updateProfile', async (req, resp) => {
     const user = await User.findById(req.session.userId).lean();
-    const { fname, lname, id, email, description1 } = req.body;
+    const { fname, lname, id, email, description1, profilepic} = req.body;
     const userId = user._id;
-    try {
-        await User.findOneAndUpdate(
-            { _id: userId },
-            { fname, lname, id, email, description1 },
-            { new: true } 
-        );
-        resp.redirect(`/Profile`); // Redirect back to the profile page
-    } catch (error) {
-        errorFn(error);
+
+    let updateFields = {};
+
+    if (fname) updateFields.fname = fname;
+    if (lname) updateFields.lname = lname;
+    if (id) updateFields.id = id;
+    if (email) updateFields.email = email;
+    if (description1) updateFields.description1 = description1;
+    if (profilepic) updateFields.profilepic = profilepic
+
+    if (Object.keys(updateFields).length > 0) {
+        try {
+            await User.findOneAndUpdate(
+                { _id: userId },
+                updateFields,
+                { new: true }
+            );
+            resp.redirect(`/Profile`); 
+        } catch (error) {
+            errorFn(error);
+        }
+    } else {
+        resp.redirect(`/Profile`); 
     }
 });
 

@@ -8,6 +8,7 @@ const Reservations = require('../models/reservations.js');
 const reserve = require('./reservation.js');
 const reservations = require('../models/reservations.js');
 const labsController = require('./laboratory.js');
+const helpdesk = require('../models/helpDesk.js');
 
 adminRouter.get('/index', async (req, res) => {
 
@@ -315,4 +316,16 @@ adminRouter.get('/AboutUs', async (req, resp) => {
         user
     });
 });
+
+adminRouter.get('/queries', async (req, resp) => {
+    const user = await User.findById(req.session.userId).lean(); 
+    const queries = await helpdesk.find({}).lean();
+    resp.render('queries', {
+        layout: 'admin',
+        title: 'Queries',
+        queries,
+        user
+    });
+});
+
 module.exports = adminRouter;

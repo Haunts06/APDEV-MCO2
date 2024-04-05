@@ -1,69 +1,109 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>About Us</title>
-    <style> 
-    body {
-        font-family: 'Roboto', sans-serif;
-        background: #050517;
-        color: white;
-        margin-left: 20%; /* Adjust according to the width of your sidebar */
-        padding: 3%;
-    }
+    <head>
+        <title>About Us</title>
+        <style> 
+        body {
+            display: flex;
+            flex-direction: row;
+            background-color: white;
+            font-family: 'Roboto', sans-serif;
+            margin-left: 20%;
+            padding: 3%;
+        }
+    
+        #main {
+            display: flex;
+            flex-direction: column;
+            padding-left: 4%;
+            width: 80%;
+            padding-top: 30px;
+        }
+    
+        .header-text h1 {
+            font-size: 50px;
+            text-align: center;
+            font-weight: bold; 
+        }
+    
+        .body-text h2 {
+            font-size: 30px;
+            margin-top: 0px;
+            color: #050517;
+            text-align: center;
+        }
+    
+        .body-text p {
+            font-size: 20px;
+            color: #050517;
+            text-indent: 50px;
+        }
+        .body-text {
+            display: flex;
+        }
+    
+        footer {
+            position: fixed;
+            width: 80%; 
+            bottom: 0;
+            text-align: center;
+            border-top: 3px solid black;
+            padding-top: 1%;
+            background: #050517;
+        }
+    
+        footer p {
+            color: white;
+        }
 
-    header {
-        text-align: center;
-        border-bottom: 3px solid black;
-        padding-bottom: 1%;
-    }
+        .body-text .left-section {
+            width: 40%;
+            padding: 2.5%;
+            margin: 2.5%;
+            text-align: justify;
+            align-items: center;
+            line-height: 200%;
+            border: #050517 1px solid;
+            border-radius: 15px;
+        }
 
-    h1, h2 {
-        color: #050517;
-    }
-
-    main {
-        margin-top: 3%;
-    }
-
-    section {
-        margin-bottom: 3%;
-    }
-
-    footer {
-        position: fixed;
-        width: 80%; /* Adjust according to the width of your sidebar */
-        bottom: 0;
-        text-align: center;
-        border-top: 3px solid black;
-        padding-top: 1%;
-        background: #050517;
-    }
-</style>
+        .body-text .right-section {
+            width: 40%;
+            padding: 2.5%;
+            margin: 2.5%;
+            border: #050517 1px solid;
+            border-radius: 15px;
+        }
+    </style>
+    </head>
 </head>
 
 <body>
-    <h1>About Us</h1>
     <div class="parent-container">
-        <section>
+        <div class="header-text">
+            <h1>About Us</h1>
+        </div>
+
+        <div class="body-text">
+            <div class="left-section">
             <h2>Our Mission</h2>
             <p>LabRes is a laboratory reservation system that is used by DLSU students to reserve laboratory machines to accommodate the students need. 
                 This website offers user to book, edit, and cancel a reservation in case conflict in schedule arises. With it's clean and simple web design, 
                 users can easily navigate in order to book a reservation. In case of issues that may arise in the laboratories, users can opt to the help desk tab to 
-                raise their concerns.
+                raise their concerns.</p>
+            </div>
 
-
-            Libraries that are implemented in this website:
-
-            https://www.npmjs.com/package/express
-
-            https://www.npmjs.com/package/express-handlebars
-
-            https://www.npmjs.com/package/mongoose
-
-            https://www.npmjs.com/package/bcrypt</p>
-        </section>
-    </div
-    >
+            <div class="right-section">
+                <h2>Libraries used</h2>
+                <ul class="libraries-list">
+                    <li><a href="https://www.npmjs.com/package/express">Express</a></li>
+                    <li><a href="https://www.npmjs.com/package/express-handlebars">Express Handlebars</a></li>
+                    <li><a href="https://www.npmjs.com/package/mongoose">Mongoose</a></li>
+                    <li><a href="https://www.npmjs.com/package/bcrypt">Bcrypt</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <footer>
         <p>© 2024 Lab Res</p>
     </footer>

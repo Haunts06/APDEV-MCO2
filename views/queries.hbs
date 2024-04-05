@@ -1,0 +1,24 @@
+<div id="main">
+    <h1>All Queries</h1>
+    <table>
+        <tr>
+            <th>User ID</th>
+            
+            <th>Email</th>
+            
+            <th>Title</th> 
+            
+            <th>Description</th>
+            
+        </tr>
+
+    {{#each queries}}
+        <tr>
+            <td>{{UserID}}</td>
+            <td>{{email}}</td>
+            <td>{{title}}</td>
+            <td>{{description}}</td>
+        </tr>
+    {{/each}}
+    </table>
+</div>
