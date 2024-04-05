@@ -25,31 +25,26 @@
         <td>{{reservation.date}}</td>
         <td>{{reservation.time}}</td>
         <td>
-            <form method="POST" action="/deleteReserve">
-                <input type="hidden" name="labName" value="{{labName}}">
-                <input type="hidden" name="SlotID" value="{{reservation.SlotID}}">
-                <input type="hidden" name="date" value="{{reservation.date}}">
-                <input type="hidden" name="time" value="{{reservation.time}}">
-                <button type="submit" onclick="confirmDelete(event)">Cancel</button>
-            </form>
-            <form method="POST" action="/editReserve">
-                <input type="hidden" name="labName" value="{{labName}}">
-                <input type="hidden" name="SlotID" value="{{reservation.SlotID}}">
-                <input type="hidden" name="date" value="{{reservation.date}}">
-                <input type="hidden" name="time" value="{{reservation.time}}">
-                <button type="submit" onclick="confirmEdit(event)">Edit</button>
-            </form>
+            <div class="btn-container">
+                <form method="POST" action="/deleteReserve">
+                    <input type="hidden" name="labName" value="{{labName}}">
+                    <input type="hidden" name="SlotID" value="{{reservation.SlotID}}">
+                    <input type="hidden" name="date" value="{{reservation.date}}">
+                    <input type="hidden" name="time" value="{{reservation.time}}">
+                    <button class="edit-cancel-btn" type="submit" onclick="confirmDelete(event)">Cancel</button>
+                </form>
+                <form method="POST" action="/editReserve">
+                    <input type="hidden" name="labName" value="{{labName}}">
+                    <input type="hidden" name="SlotID" value="{{reservation.SlotID}}">
+                    <input type="hidden" name="date" value="{{reservation.date}}">
+                    <input type="hidden" name="time" value="{{reservation.time}}">
+                    <button class="edit-cancel-btn" type="submit" onclick="confirmEdit(event)">Edit</button>
+                </form>
+            </div>
         </td>
     </tr>
     {{/each}}
     </table>
-    {{!-- {{#each laboratories}}
-        <div class="box" id="lab{{id}}">
-            <p><b>{{name}}</b></p>
-            <p>{{status}}</p>
-            <p><b>{{usage}}</b> out of {{capacity}}</p>
-        </div>
-    {{/each}} --}}
 </div>
 
 <script>

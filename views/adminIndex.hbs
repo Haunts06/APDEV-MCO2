@@ -1,19 +1,65 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lab Reservation</title>
+<div id="main">
+    <h1>All Reservations</h1>
+    <table>
+        <tr>
+            <th>ID Number</th>
+            {{!-- Lab column --}}
+            <th>Lab Number</th>
+            
+            {{!-- Slot column --}}
+            <th>Slot Number</th>
+            
+            {{!-- Date column --}}
+            <th>Date</th> 
+            
+            {{!-- Time column --}}
+            <th>Time</th>
+            
+            {{!-- Edit/Cancel column --}}
+            <th>Edit/Cancel</th>
+        </tr>
 
-</head>
-<body>
- <div id="main">
-    <h1>Laboratories List</h1>
-    {{#each labs}}
-        <div class="box" id="lab{{id}}">
-            <p><b>{{name}}</b></p>
-            <p>{{status}}</p>
-            <p><b>{{usage}}</b> out of {{capacity}}</p>
-        </div>
+       {{#each reservations}}
+    <tr>
+        <td>{{reservation.UserID}}</td>
+        <td>{{labName}}</td>
+        <td>{{reservation.SlotID}}</td>
+        <td>{{reservation.date}}</td>
+        <td>{{reservation.time}}</td>
+        <td>
+            <div class="btn-container">
+                <form method="POST" action="/editReserve">
+                    <input type="hidden" name="labName" value="{{labName}}">
+                    <input type="hidden" name="SlotID" value="{{reservation.SlotID}}">
+                    <input type="hidden" name="date" value="{{reservation.date}}">
+                    <input type="hidden" name="time" value="{{reservation.time}}">
+                    <button class="edit-cancel-btn" type="submit" onclick="confirmEdit(event)">Edit</button>
+                </form>
+                <form method="POST" action="/deleteReserve">
+                    <input type="hidden" name="labName" value="{{labName}}">
+                    <input type="hidden" name="SlotID" value="{{reservation.SlotID}}">
+                    <input type="hidden" name="date" value="{{reservation.date}}">
+                    <input type="hidden" name="time" value="{{reservation.time}}">
+                    <button class="edit-cancel-btn" type="submit" onclick="confirmDelete(event)">Cancel</button>
+                </form>
+            </div>
+        </td>
+    </tr>
     {{/each}}
+    </table>
 </div>
-</body>
-</html>
+
+<script>
+    function confirmEdit(event) {
+        var answer = confirm('Are you sure you want to edit this reservation?');
+        if (!answer) {
+            event.preventDefault(); // Prevent form submission if cancellation
+        }
+    }
+    function confirmDelete(event) {
+        var answer = confirm('Are you sure you want to delete this reservation?');
+        if (!answer) {
+            event.preventDefault(); // Prevent form submission if cancellation
+        }
+    }
+</script>

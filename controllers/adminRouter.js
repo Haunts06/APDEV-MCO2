@@ -8,19 +8,41 @@ const Reservations = require('../models/reservations.js');
 const reserve = require('./reservation.js');
 const reservations = require('../models/reservations.js');
 
-adminRouter.get('/index', async (req, resp) => {
+adminRouter.get('/index', async (req, res) => {
     try {
-        const user = await User.findById(req.session.userId).lean(); 
-        const labs = await Laboratory.find({}).lean();
-        resp.render('main', { 
+        // const reservations = await Laboratory.find({}).lean();
+        let reservations =  await Laboratory.aggregate([
+            {
+                $unwind: "$reservationData", // Deconstruct the reservationData array
+            },
+            {
+                $unwind: "$reservationData.reservationList", // Deconstruct the reservationList array
+            },
+            {
+                $match: {
+                "reservationData.reservationList.isOccupied": true,
+                },
+            },
+            {
+                $project: {
+                _id: 0, // Exclude the _id field
+                labName: "$name",
+                reservation: "$reservationData.reservationList" , // Include only the reservationList field
+                },
+            },
+        ]);
+
+        console.log(reservations);
+        
+        res.render('adminIndex', { 
             layout:'admin', 
-            title: 'Home',
-            labs, user });
-    } catch (err) {
-        console.error(err);
-        resp.status(500).send('Server Error');
+            title: 'Admin Home',
+            reservations
+        });
+    } catch (error) {
+        console.log(error);
     }
-})
+});
 
 adminRouter.get('/ReservationAdminView', async (req, resp) => {
     const user = await User.findById(req.session.userId).lean();

@@ -1,4 +1,5 @@
 const express = require('express');
+// const multer = require('multer');
 const authLogin = require('./login.js');
 const authRegister = require ('./register.js');
 const router = express.Router();
@@ -155,7 +156,7 @@ router.post('/updateProfile', async (req, resp) => {
     const { fname, lname, id, email, description1 } = req.body;
     const userId = user._id;
     try {
-        const updatedUser = await User.findOneAndUpdate(
+        await User.findOneAndUpdate(
             { _id: userId },
             { fname, lname, id, email, description1 },
             { new: true } 
@@ -290,34 +291,35 @@ router.post('/confirm-reservation', async (req, res) => {
                 }, 
                 { 
                     $set: {
-                        "reservationData.$[].reservationList.$[reservation].UserID": user.id,
-                        "reservationData.$[].reservationList.$[reservation].isOccupied": true,
+                        "reservationData.$[].reservationList.$[inner].UserID": user.id,
+                        "reservationData.$[].reservationList.$[inner].isOccupied": true,
                     },
+
                 },
                 { 
                     arrayFilters: [
-                        { "reservation.SlotID": SlotID, "reservation.date": selectedDate, "reservation.time": selectedTime, "reservation.isOccupied": false },
+                        { "inner.SlotID": SlotID, "inner.date": selectedDate, "inner.time": selectedTime, "inner.isOccupied": false },
                     ],
-                    new: true, // This option returns the updated document
+                    new: true, 
                 }
             );
-            await Laboratory.findOneAndUpdate(
-                { 
+            await Laboratory.findOneAndUpdate( // increment usage
+                {
                     name: reqLabName,
-                    "reservationData.reservationList.date": selectedDate, 
-                    "reservationData.reservationList.time": selectedTime,
-                }, 
-                { 
+                },
+                {
                     $inc: {
-                        "reservationData.$.usage": 1
+                        "reservationData.$[outer].usage": 1
                     }
                 },
                 { 
-                    new: true, // This option returns the updated document
+                    arrayFilters: [
+                        { "outer.reservationList.date": selectedDate, "outer.reservationList.time": selectedTime },
+                    ],
+                    new: true, 
                 }
-            );
+            )
     
-            // console.log(updatedDocument.reservationData); // remove soon
         } catch(error) {console.log(error);}
 
 
@@ -332,22 +334,15 @@ router.post('/deleteReserve', async (req, res) => {
     const { labName, SlotID, date, time } = req.body;
     console.log("LabName: " + labName, "Date: " + date + " Time: " + time + " Slot ID: " + SlotID);
 
-    // Perform the delete operation based on the provided data
     try {
-        const updatedLab = await Laboratory.findOneAndUpdate(
+        await Laboratory.findOneAndUpdate(
             { 
                 name: labName,
-                // "reservationData.reservationList.date": date,
-                // "reservationData.reservationList.time": time,
-                // "reservationData.reservationList.SlotID": SlotID
             },
             {
                 $set: {
                     "reservationData.$[].reservationList.$[inner].UserID":  "", 
                     "reservationData.$[].reservationList.$[inner].isOccupied": false 
-                },
-                $inc: {
-                    "reservationData.$[].usage": -1
                 },
             },
             {
@@ -357,6 +352,23 @@ router.post('/deleteReserve', async (req, res) => {
                 new: true
             }
         );
+        await Laboratory.findOneAndUpdate(
+            {
+                name: labName,
+            },
+            {
+                $inc: {
+                    "reservationData.$[outer].usage": -1
+                }
+            },
+            { 
+                arrayFilters: [
+                    { "outer.reservationList.date": date, "outer.reservationList.time": time },
+                ],
+                new: true, 
+            }
+        )
+        
 
         console.log("Reservation deleted successfully");
         res.redirect("/home");
@@ -370,7 +382,7 @@ router.post('/editReserve', async (req, res) => {
     const { labName, SlotID, date, time } = req.body;
     console.log("LabName: " + labName, "Date: " + date + " Time: " + time + " Slot ID: " + SlotID);
     try {
-        const updatedLab = await Laboratory.findOneAndUpdate(
+        await Laboratory.findOneAndUpdate(
             { 
                 name: labName,
             },
@@ -390,6 +402,22 @@ router.post('/editReserve', async (req, res) => {
                 new: true
             }
         );
+        await Laboratory.findOneAndUpdate( // increment usage
+                {
+                    name: reqLabName,
+                },
+                {
+                    $inc: {
+                        "reservationData.$[outer].usage": 1
+                    }
+                },
+                { 
+                    arrayFilters: [
+                        { "outer.reservationList.date": date, "outer.reservationList.time": time },
+                    ],
+                    new: true, 
+                }
+            )
 
         console.log("Reservation deleted successfully");
         res.redirect("/reservation");

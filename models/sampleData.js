@@ -50,7 +50,6 @@ async function createSampleLabs() {
     { id:4, name: 'Lab 4', capacity: 15, },
     { id:5, name: 'Lab 5', capacity: 20, },
   ]; 
-  // console.log(sampleLabData1);
 
   try {
       await Lab.deleteMany().then(result => {

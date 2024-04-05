@@ -11,7 +11,7 @@ const reservation = new Schema ({
 
 const reservationList = new Schema ({
     status: {type: String, default: "Available"}, 
-    usage: {type: Number, default: 0},
+    usage: {type: Number, default: 0, min: 0},
     reservationList: [reservation]
 })
 

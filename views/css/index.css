@@ -30,15 +30,39 @@ body {
     justify-content: space-between;
 }
 
+.btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.edit-cancel-btn {
+    display: flex;
+    background-color: #808080; 
+    color: #fff; 
+    border: none; 
+    padding: 10px 20px; 
+    text-align: center; 
+    text-decoration: none; 
+    font-size: 16px; 
+    margin: 4px 2px; 
+    cursor: pointer; 
+    border-radius: 10px; 
+    transition: background-color 0.3s ease; 
+    flex: 1; 
+    margin: 0 5px; 
+}
+
+.edit-cancel-btn:hover {
+    background-color: #696969; 
+}
+
 .box:hover {
     background-color: #36c8a4;
 }
 
-
 #home {
     color: #30ad94 !important;
 }
-
 
 h1 {
     text-align: center;
