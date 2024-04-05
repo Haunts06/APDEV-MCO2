@@ -1,5 +1,4 @@
 const express = require('express');
-// const multer = require('multer');
 const authLogin = require('./login.js');
 const authRegister = require ('./register.js');
 const router = express.Router();
@@ -13,7 +12,6 @@ const helpDesk = require('../models/helpDesk.js');
 
 function errorFn(error) {
     console.error(error);
-    // error.status(500).send('Server Error');
 }
 
 router.get('/', function(req, resp){
@@ -85,13 +83,13 @@ router.post('/submit-helpdesk', async (req, res) => {
 router.get('/home', async (req, res) => {
     try {
         const user = await User.findById(req.session.userId).lean(); 
-        // const reservations = await Laboratory.find({}).lean();
+
         let reservations =  await Laboratory.aggregate([
             {
-                $unwind: "$reservationData", // Deconstruct the reservationData array
+                $unwind: "$reservationData", 
             },
             {
-                $unwind: "$reservationData.reservationList", // Deconstruct the reservationList array
+                $unwind: "$reservationData.reservationList", 
             },
             {
                 $match: {
@@ -102,7 +100,7 @@ router.get('/home', async (req, res) => {
                 $project: {
                 _id: 0, // Exclude the _id field
                 labName: "$name",
-                reservation: "$reservationData.reservationList" , // Include only the reservationList field
+                reservation: "$reservationData.reservationList" ,
                 },
             },
         ]);
@@ -121,13 +119,13 @@ router.get('/home', async (req, res) => {
 router.post('/home', async (req, res) => {
     try {
         const user = await User.findById(req.session.userId).lean(); 
-        // const reservations = await Laboratory.find({}).lean();
+
         let reservations =  await Laboratory.aggregate([
             {
-                $unwind: "$reservationData", // Deconstruct the reservationData array
+                $unwind: "$reservationData", 
             },
             {
-                $unwind: "$reservationData.reservationList", // Deconstruct the reservationList array
+                $unwind: "$reservationData.reservationList", 
             },
             {
                 $match: {
@@ -137,7 +135,7 @@ router.post('/home', async (req, res) => {
             {
                 $project: {
                 _id: 0, // Exclude the _id field
-                reservation: "$reservationData.reservationList" , // Include only the reservationList field
+                reservation: "$reservationData.reservationList" ,
                 },
             },
         ]);
@@ -236,18 +234,13 @@ router.post('/selectlab', async (req, res) => {
     req.session.date = selectedDate;
     req.session.time = selectedTime;
 
-    console.log(req.body); // remove soon 
-    console.log("LAB: ", reqLabName); // remove soon
-    console.log("DATE: ", selectedDate); // remove soon
-    console.log("TIME: ", selectedTime); // remove soon
-
     let labDetails = [];
 
     let reqReservationList = await Laboratory.aggregate([{ $match: { name: reqLabName, },},{ $unwind: "$reservationData", }, { $unwind: "$reservationData.reservationList", }, 
     { $match: { "reservationData.reservationList.date": selectedDate, "reservationData.reservationList.time": selectedTime }, }, 
     { $project: { _id: 0, reservation: "$reservationData.reservationList", }, }, ]);
 
-    if(reqReservationList.length == 0) { // this if statement makes sure that what details is passed to the hbs is complete and not empty
+    if(reqReservationList.length == 0) {
         await labsController.checkExistingReservationList(reqReservationList, reqLabName, selectedDate, selectedTime);
         reqReservationList = await Laboratory.aggregate([{ $match: { name: reqLabName, },},{ $unwind: "$reservationData", }, { $unwind: "$reservationData.reservationList", }, 
                                                          { $match: { "reservationData.reservationList.date": selectedDate, "reservationData.reservationList.time": selectedTime }, }, 
@@ -266,7 +259,6 @@ router.post('/selectlab', async (req, res) => {
 
     labDetails = await reserve.updateDetails(labDetails);
 
-    console.log(labDetails); // remove soon
 
     
     const user = await User.findById(userId).lean();
@@ -311,7 +303,7 @@ router.get('/404', async (req, resp) => {
 router.post('/reserve', async (req, resp) => {
     const user = await User.findById(req.session.userId).lean();
     const SlotID = req.body.SlotID;
-    console.log(req.body);
+    
     resp.render('confirm-reservation', { 
         layout: 'reservation',
         SlotID, 
@@ -386,7 +378,6 @@ router.post('/confirm-reservation', async (req, res) => {
 
 router.post('/deleteReserve', async (req, res) => {
     const { labName, SlotID, date, time } = req.body;
-    console.log("LabName: " + labName, "Date: " + date + " Time: " + time + " Slot ID: " + SlotID);
 
     try {
         await Laboratory.findOneAndUpdate(
@@ -434,7 +425,6 @@ router.post('/deleteReserve', async (req, res) => {
 
 router.post('/editReserve', async (req, res) => {
     const { labName, SlotID, date, time } = req.body;
-    console.log("LabName: " + labName, "Date: " + date + " Time: " + time + " Slot ID: " + SlotID);
     try {
         await Laboratory.findOneAndUpdate(
             { 

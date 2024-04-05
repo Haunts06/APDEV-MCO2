@@ -2,20 +2,6 @@ const User = require('./users.js');
 const Lab = require('./laboratories.js');
 const Reservations = require('./reservations.js');
 
-async function createSampleUsers() {
-  // Define sample users
-  const sampleUsers = [
-    { fname: 'Jillian', lname: 'Garcilan', id: '1234567', password: '123', email: 'garcilan@example.com', profilepic:"https://en.wikipedia.org/wiki/Kirby_%28character%29#/media/File:SSU_Kirby_artwork.png"},
-  ];
-
-  try {
-    await User.insertMany(sampleUsers);
-    console.log('Sample users inserted successfully');
-  } catch (error) {
-    console.error('Error inserting sample users', error);
-  }
-}
-
 function labSeats(seatNum) {
   let seats = [];
 
@@ -25,11 +11,11 @@ function labSeats(seatNum) {
   }
 
   const reservationList = seats.map(seat => ({
-    UserID: "", // Default value for UserID
+    UserID: "",
     SlotID: seat.SlotID,
-    isOccupied: false, // Default value for isOccupied
-    date: "", // Default value for date
-    time: "" // Default value for time
+    isOccupied: false, 
+    date: "", 
+    time: "" 
   }));
 
   return reservationList; 

@@ -136,7 +136,6 @@ adminRouter.get('/reservation', async (req, resp) => {
 adminRouter.post('/reserve', async (req, resp) => {
     const user = await User.findById(req.session.userId).lean();
     const SlotID = req.body.SlotID;
-    console.log(req.body);
     resp.render('confirm-reservation-admin', { 
         layout: 'reservationadmin',
         SlotID, 
@@ -148,8 +147,6 @@ adminRouter.post('/reserve', async (req, resp) => {
 
 adminRouter.post('/deleteReserve', async (req, res) => {
     const { labName, SlotID, date, time } = req.body;
-    console.log("LabName: " + labName, "Date: " + date + " Time: " + time + " Slot ID: " + SlotID);
-
     try {
         await Laboratory.findOneAndUpdate(
             { 
@@ -196,7 +193,6 @@ adminRouter.post('/deleteReserve', async (req, res) => {
 
 adminRouter.post('/editReserve', async (req, res) => {
     const { labName, SlotID, date, time } = req.body;
-    console.log("LabName: " + labName, "Date: " + date + " Time: " + time + " Slot ID: " + SlotID);
     try {
         await Laboratory.findOneAndUpdate(
             { 
@@ -253,18 +249,13 @@ adminRouter.post('/selectlab', async (req, res) => {
     req.session.date = selectedDate;
     req.session.time = selectedTime;
 
-    console.log(req.body); // remove soon 
-    console.log("LAB: ", reqLabName); // remove soon
-    console.log("DATE: ", selectedDate); // remove soon
-    console.log("TIME: ", selectedTime); // remove soon
-
     let labDetails = [];
 
     let reqReservationList = await Laboratory.aggregate([{ $match: { name: reqLabName, },},{ $unwind: "$reservationData", }, { $unwind: "$reservationData.reservationList", }, 
     { $match: { "reservationData.reservationList.date": selectedDate, "reservationData.reservationList.time": selectedTime }, }, 
     { $project: { _id: 0, reservation: "$reservationData.reservationList", }, }, ]);
 
-    if(reqReservationList.length == 0) { // this if statement makes sure that what details is passed to the hbs is complete and not empty
+    if(reqReservationList.length == 0) { 
         await labsController.checkExistingReservationList(reqReservationList, reqLabName, selectedDate, selectedTime);
         reqReservationList = await Laboratory.aggregate([{ $match: { name: reqLabName, },},{ $unwind: "$reservationData", }, { $unwind: "$reservationData.reservationList", }, 
                                                          { $match: { "reservationData.reservationList.date": selectedDate, "reservationData.reservationList.time": selectedTime }, }, 
@@ -283,12 +274,12 @@ adminRouter.post('/selectlab', async (req, res) => {
 
     labDetails = await reserve.updateDetails(labDetails);
 
-    console.log(labDetails); // remove soon
+   
 
     
     const user = await User.findById(userId).lean();
     const reserveDates = await reserve.getNextFiveWeekdays();
-    req.session.selectedLabName = reqLabName;  // set lab name to current session; global variable
+    req.session.selectedLabName = reqLabName;  
     try {
 
 
@@ -296,12 +287,12 @@ adminRouter.post('/selectlab', async (req, res) => {
             layout: 'reservationadmin',
             title: 'Reservation',
             newUser: newUser,
-            user, // pass the user's details to the template
+            user, 
             reserveDate: reserveDates,
             labName: reqLabName,
             labDetails,
-            reqReservationList, // pass the selected lab's details to the template
-            labs: await Laboratory.find({}).lean(), // Pass the list of labs again for the dropdown
+            reqReservationList, 
+            labs: await Laboratory.find({}).lean(),
             date: selectedDate,
             time: selectedTime
         });
