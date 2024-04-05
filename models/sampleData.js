@@ -51,4 +51,4 @@ async function createSampleLabs() {
 }
 
 // Export the functions
-module.exports = { createSampleUsers, createSampleLabs };
+module.exports = { createSampleLabs };
